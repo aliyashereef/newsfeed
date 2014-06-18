@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface FeedsViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UICollectionView *CollectionView;
+@property (weak, nonatomic) IBOutlet UITableView *MenuTable;
 
+@property (weak, nonatomic) IBOutlet UITableView *FeedsTable;
+@property (weak, nonatomic) IBOutlet UIButton *MenuButton;
 @end
