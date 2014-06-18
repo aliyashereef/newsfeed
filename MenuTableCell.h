@@ -10,4 +10,5 @@
 
 @interface MenuTableCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *MainLabel;
 @end
