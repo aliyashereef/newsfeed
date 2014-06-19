@@ -18,7 +18,7 @@
 {
     NSArray *menulist,*menulist1;
     NSURL *Politicsurl,*MoviewReiviewurl,*Sportsurl,*Hollywoodurl,*NationalInteresturl;
-    NSMutableArray *SportsArray,*PoliticsArray,*MoviewReiviewArray,*NationalInterestArray,*HollywoodArray,*AllNewsArray,*AllNews;
+    NSMutableArray *AllNewsArray,*AllNews;
     int selectedrow,loginref,selectedfeed,didscroll,collectionindex,didselectcollection;
     NSTimer *timer;
 }
@@ -41,41 +41,31 @@
     Sportsurl=[NSURL URLWithString:@"http://indianexpress.com/section/sports/feed/"];
     NationalInteresturl=[NSURL URLWithString:@"http://indianexpress.com/print/national-interest/feed/"];
     Hollywoodurl=[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/hollywood/feed/"];
-    SportsArray=[[NSMutableArray alloc] init];
-    MoviewReiviewArray=[[NSMutableArray alloc] init];
-    NationalInterestArray=[[NSMutableArray alloc] init];
-    PoliticsArray=[[NSMutableArray alloc] init];
-    HollywoodArray=[[NSMutableArray alloc] init];
     AllNewsArray=[[NSMutableArray alloc] init];
     AllNews=[[NSMutableArray alloc] init];
-    SportsArray =[feed startparse:Sportsurl];
-    MoviewReiviewArray=[feed startparse:MoviewReiviewurl];
-    NationalInterestArray=[feed startparse:NationalInteresturl];
-    HollywoodArray=[feed startparse:Hollywoodurl];
-    PoliticsArray=[feed startparse:Politicsurl];
-    [AllNews addObject:PoliticsArray];
-    [AllNews addObject:MoviewReiviewArray];
-    [AllNews addObject:HollywoodArray];
-    [AllNews addObject:NationalInterestArray];
-    [AllNews addObject:SportsArray];
+    [AllNews addObject:[feed startparse:Politicsurl]];
+    [AllNews addObject:[feed startparse:MoviewReiviewurl]];
+    [AllNews addObject:[feed startparse:Hollywoodurl]];
+    [AllNews addObject:[feed startparse:NationalInteresturl]];
+    [AllNews addObject:[feed startparse:Sportsurl]];
     for(allnewsindex=0;allnewsindex<=50;allnewsindex++)
     {
         if((allnewsindex%5)==0)
         {
-            [AllNewsArray addObject:[PoliticsArray objectAtIndex:(allnewsindex1)]];
+            [AllNewsArray addObject:[[AllNews objectAtIndex:(0)] objectAtIndex:(allnewsindex1)]];
             allnewsindex1++;
         }
         if ((allnewsindex%5)==1) {
-            [AllNewsArray addObject:[MoviewReiviewArray objectAtIndex:(allnewsindex2)]];
+            [AllNewsArray addObject:[[AllNews objectAtIndex:(1)] objectAtIndex:(allnewsindex2)]];
             allnewsindex2++;
         } else if ((allnewsindex%5)==2){
-            [AllNewsArray addObject:[HollywoodArray objectAtIndex:(allnewsindex3)]];
+            [AllNewsArray addObject:[[AllNews objectAtIndex:(2)] objectAtIndex:(allnewsindex3)]];
             allnewsindex3++;
         }else if ((allnewsindex%5)==3){
-            [AllNewsArray addObject:[NationalInterestArray objectAtIndex:(allnewsindex4)]];
+            [AllNewsArray addObject:[[AllNews objectAtIndex:(3)] objectAtIndex:(allnewsindex4)]];
             allnewsindex4++;
         }else if ((allnewsindex%5)==4){
-//            [AllNewsArray addObject:[SportsArray objectAtIndex:(allnewsindex5)]];
+//            [AllNewsArray addObject:[[AllNewsArray objectAtIndex:(4)] objectAtIndex:(allnewsindex5)]];
             allnewsindex5++;
         }
     }
@@ -160,13 +150,13 @@
             [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
             [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
             cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
-            cell.FeedDiscription.text = [[PoliticsArray objectAtIndex:indexPath.row] objectForKey:@"description"];
+            cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"description"];
             while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
                 cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
             [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
             cell.FeedDiscription.numberOfLines=3;
             [cell.FeedDiscription sizeToFit];
-            [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[PoliticsArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
+            [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
                 return cell;
     }
     return NULL;
