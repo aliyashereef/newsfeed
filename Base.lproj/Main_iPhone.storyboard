@@ -19,6 +19,51 @@
             </objects>
             <point key="canvasLocation" x="-349" y="88"/>
         </scene>
+        <!--Sign In View-->
+        <scene sceneID="q8m-IP-62V">
+            <objects>
+                <viewController id="Gid-FT-qfK" customClass="SignInView" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ecu-9x-UOx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rpe-C4-9BK" customClass="GPPSignInButton">
+                                <rect key="frame" x="99" y="384" width="134" height="62"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Google Sign In">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="jMp-Dw-hM3">
+                                <rect key="frame" x="34" y="89" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dr9-Kf-LZv">
+                                <rect key="frame" x="139" y="252" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2cG-GE-pf5">
+                                <rect key="frame" x="139" y="300" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6zw-ZU-jti"/>
+                    <connections>
+                        <outlet property="signInButton" destination="Rpe-C4-9BK" id="Uol-Ta-NLf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s03-8X-ugj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="138" y="-556"/>
+        </scene>
         <!--Feeds View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -66,9 +111,17 @@
                                 <rect key="frame" x="0.0" y="248" width="111" height="360"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="Gdd-l0-0pQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="111" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="vXZ-lx-hvc" id="NEL-46-qHA"/>
+                                    </connections>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MainMenu" rowHeight="43" id="NBs-Fw-P4q" customClass="MenuTableCell">
-                                        <rect key="frame" x="0.0" y="22" width="111" height="43"/>
+                                        <rect key="frame" x="0.0" y="66" width="111" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NBs-Fw-P4q" id="TwH-kG-IXZ">
                                             <rect key="frame" x="0.0" y="0.0" width="111" height="42"/>
@@ -144,7 +197,7 @@
                             <rect key="frame" x="8" y="6" width="304" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" title="Button">
+                            <state key="normal" title="NewsFeeds">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -156,7 +209,9 @@
                         <outlet property="CollectionView" destination="Aq6-5U-aI4" id="r5p-nH-n0w"/>
                         <outlet property="FeedsTable" destination="gDC-Y6-wLt" id="ybQ-FD-seE"/>
                         <outlet property="MenuTable" destination="sDq-o5-i8E" id="LRf-oY-ChP"/>
+                        <outlet property="NewsSearch" destination="Gdd-l0-0pQ" id="tPV-Aw-r9b"/>
                         <segue destination="ce8-wE-jHM" kind="push" identifier="DetailedView" id="YVa-qF-LEs"/>
+                        <segue destination="Gid-FT-qfK" kind="modal" identifier="SignInView" id="Izu-b0-uUb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
