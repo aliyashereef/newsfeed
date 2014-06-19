@@ -20,7 +20,7 @@
     [parser parse];
     return feeds;
 }
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+- (void)parser:(NSXMLParser *)par didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
     
     element = elementName;
     
@@ -48,7 +48,7 @@
 }
 
 
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+- (void)parser:(NSXMLParser *)par didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
     
     if ([elementName isEqualToString:@"item"]) {
         
@@ -58,10 +58,15 @@
         [item setObject:disc forKey:@"description"];
         [item setObject:date forKey:@"pubDate"];
         [feeds addObject:[item copy]];
+        if(feeds.count==50)
+        {
+            [parser abortParsing];
+        }
+
     }
 }
 
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+- (void)parser:(NSXMLParser *)par foundCharacters:(NSString *)string {
     
     if ([element isEqualToString:@"title"]) {
         [title appendString:string];
@@ -79,10 +84,7 @@
     
 }
 
-- (void)parserDidEndDocument:(NSXMLParser *)parser {
-    
-//    [self.SubTable reloadData];
-//    [self.CollectionView reloadData];
+- (void)parserDidEndDocument:(NSXMLParser *)par {
     
 }
 

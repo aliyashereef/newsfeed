@@ -1,4 +1,4 @@
-//
+    //
 //  FeedsViewController.m
 //  NewsFeeds
 //
@@ -18,8 +18,9 @@
 {
     NSArray *menulist,*menulist1;
     NSURL *Politicsurl,*MoviewReiviewurl,*Sportsurl,*Hollywoodurl,*NationalInteresturl;
-    NSMutableArray *SportsArray,*PoliticsArray,*MoviewReiviewArray,*NationalInterestArray,*HollywoodArray,*AllNewsArray;
-    int selectedrow,loginref,selectedfeed;
+    NSMutableArray *SportsArray,*PoliticsArray,*MoviewReiviewArray,*NationalInterestArray,*HollywoodArray,*AllNewsArray,*AllNews;
+    int selectedrow,loginref,selectedfeed,didscroll,collectionindex,didselectcollection;
+    NSTimer *timer;
 }
 
 @end
@@ -46,12 +47,18 @@
     PoliticsArray=[[NSMutableArray alloc] init];
     HollywoodArray=[[NSMutableArray alloc] init];
     AllNewsArray=[[NSMutableArray alloc] init];
+    AllNews=[[NSMutableArray alloc] init];
     SportsArray =[feed startparse:Sportsurl];
     MoviewReiviewArray=[feed startparse:MoviewReiviewurl];
     NationalInterestArray=[feed startparse:NationalInteresturl];
     HollywoodArray=[feed startparse:Hollywoodurl];
     PoliticsArray=[feed startparse:Politicsurl];
-    for(allnewsindex=0;allnewsindex<=100;allnewsindex++)
+    [AllNews addObject:PoliticsArray];
+    [AllNews addObject:MoviewReiviewArray];
+    [AllNews addObject:HollywoodArray];
+    [AllNews addObject:NationalInterestArray];
+    [AllNews addObject:SportsArray];
+    for(allnewsindex=0;allnewsindex<=50;allnewsindex++)
     {
         if((allnewsindex%5)==0)
         {
@@ -68,7 +75,7 @@
             [AllNewsArray addObject:[NationalInterestArray objectAtIndex:(allnewsindex4)]];
             allnewsindex4++;
         }else if ((allnewsindex%5)==4){
-            [AllNewsArray addObject:[SportsArray objectAtIndex:(allnewsindex5)]];
+//            [AllNewsArray addObject:[SportsArray objectAtIndex:(allnewsindex5)]];
             allnewsindex5++;
         }
     }
@@ -89,7 +96,23 @@
     else{
         loginref=1;
     }
+    timer= [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)4.0
+                                            target:(id)self selector:@selector(cellchange)userInfo:(id)nil
+                                           repeats:(BOOL)YES];
+
 }
+-(void)cellchange
+{
+    if(collectionindex==24)
+    {
+        collectionindex=0;
+    }
+
+    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:++collectionindex inSection:0];
+    [self.CollectionView scrollToItemAtIndexPath:indexpath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+}
+
+
 //tableview
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView==self.MenuTable)
@@ -97,26 +120,7 @@
         return 6;
     }else
     {
-        if(selectedrow==1)
-        {
-            return PoliticsArray.count;        }
-        else if (selectedrow==2)
-        {
-            return MoviewReiviewArray.count;
-        }
-        else if (selectedrow==3)
-        {
-            return HollywoodArray.count;
-        }
-        else if (selectedrow==4)
-        {
-            return NationalInterestArray.count;
-        }
-        else if (selectedrow==5)
-        {
-            return SportsArray.count;
-        }
-        return SportsArray.count;
+        return 50;
     }
 }
 
@@ -152,9 +156,7 @@
     {
         NSRange range;
         FeedsTableCell *cell = (FeedsTableCell*)[tableView dequeueReusableCellWithIdentifier:@"FeedMenu" forIndexPath:indexPath];
-        if(selectedrow==1)
-        {
-            cell.FeedTitle.text = [[PoliticsArray objectAtIndex:indexPath.row] objectForKey: @"title"];
+            cell.FeedTitle.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey: @"title"];
             [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
             [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
             cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
@@ -165,68 +167,7 @@
             cell.FeedDiscription.numberOfLines=3;
             [cell.FeedDiscription sizeToFit];
             [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[PoliticsArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
-        }
-        else if (selectedrow==2)
-        {
-            cell.FeedTitle.text = [[MoviewReiviewArray objectAtIndex:indexPath.row] objectForKey: @"title"];
-            [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
-            [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
-            cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
-            cell.FeedDiscription.text = [[MoviewReiviewArray objectAtIndex:indexPath.row] objectForKey:@"description"];
-            while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-                cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
-            [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
-            cell.FeedDiscription.numberOfLines=3;
-            [cell.FeedDiscription sizeToFit];
-            [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[MoviewReiviewArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
- 
-        }
-        else if (selectedrow==3)
-        {
-            cell.FeedTitle.text = [[HollywoodArray objectAtIndex:indexPath.row] objectForKey: @"title"];
-            [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
-            [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
-            cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
-            cell.FeedDiscription.text = [[HollywoodArray objectAtIndex:indexPath.row] objectForKey:@"description"];
-            while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-                cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
-            [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
-            cell.FeedDiscription.numberOfLines=3;
-            [cell.FeedDiscription sizeToFit];
-            [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[HollywoodArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
-        }
-        else if (selectedrow==4)
-        {
-            cell.FeedTitle.text = [[NationalInterestArray objectAtIndex:indexPath.row] objectForKey: @"title"];
-            [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
-            [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
-            cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
-            cell.FeedDiscription.text = [[NationalInterestArray objectAtIndex:indexPath.row] objectForKey:@"description"];
-            while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-                cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
-            [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
-            cell.FeedDiscription.numberOfLines=3;
-            [cell.FeedDiscription sizeToFit];
-            [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[NationalInterestArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
-
-        }
-        else if (selectedrow==5)
-        {
-            cell.FeedTitle.text = [[SportsArray objectAtIndex:indexPath.row] objectForKey: @"title"];
-            [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
-            [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
-            cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
-            cell.FeedDiscription.text = [[SportsArray objectAtIndex:indexPath.row] objectForKey:@"description"];
-            while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-                cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
-            [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
-            cell.FeedDiscription.numberOfLines=3;
-            [cell.FeedDiscription sizeToFit];
-            [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[SportsArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
-
-        }
-
-        return cell;
+                return cell;
     }
     return NULL;
     
@@ -258,7 +199,8 @@
         [self.FeedsTable reloadData];
     }
     if(tableView==self.FeedsTable)
-    {   selectedfeed=indexPath.row;
+    {
+        selectedfeed=indexPath.row;
         [self performSegueWithIdentifier:@"DetailedView" sender:self];
     }
 }
@@ -276,9 +218,15 @@
     {
         cell=[[CollectionCell alloc]init];
     }
-    int r=indexPath.row;
-    [cell.CollectionImage setImageWithURL:[NSURL URLWithString:[[AllNewsArray objectAtIndex:r] valueForKey:@"image"] ] placeholderImage:nil];
+    collectionindex=indexPath.row;
+    [cell.CollectionImage setImageWithURL:[NSURL URLWithString:[[AllNewsArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
     return cell;
+    
+}
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath  {
+    didselectcollection=1;
+    [self performSegueWithIdentifier:@"DetailedView" sender:nil];
+    
     
 }
 
@@ -292,27 +240,18 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    DetailedView *zoom = [segue destinationViewController];
-    if(selectedrow==1)
+{ DetailedView *zoom = [segue destinationViewController];
+    if([segue.identifier isEqualToString:@"DetailedView"])
     {
-        zoom.feed=[PoliticsArray objectAtIndex:(selectedfeed)];
-    }
-    else if (selectedrow==2)
-    {
-        zoom.feed=[MoviewReiviewArray objectAtIndex:(selectedfeed)];
-    }
-    else if (selectedrow==3)
-    {
-        zoom.feed=[HollywoodArray objectAtIndex:(selectedfeed)];
-    }
-    else if (selectedrow==4)
-    {
-        zoom.feed=[NationalInterestArray objectAtIndex:(selectedfeed)];
-    }
-    else if (selectedrow==5)
-    {
-        zoom.feed=[SportsArray objectAtIndex:(selectedfeed)];
+        if (didselectcollection==1)
+        {
+            zoom.feed=[AllNewsArray objectAtIndex:(collectionindex)];
+            didselectcollection=0;
+        }
+        else
+        {
+            zoom.feed=[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:selectedfeed];
+        }
     }
 }
 
