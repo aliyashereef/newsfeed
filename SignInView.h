@@ -11,5 +11,9 @@
 @class GPPSignInButton;
 @interface SignInView : UIViewController<GPPSignInDelegate>
 @property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
-
+@property (weak, nonatomic) IBOutlet UIImageView *UserAvtar;
+@property (weak, nonatomic) IBOutlet UILabel *UserNAme;
+@property (weak, nonatomic) IBOutlet UILabel *EmailId;
+@property(weak, nonatomic) IBOutlet UIButton *signOutButton;
+- (IBAction)SignOutButton:(id)sender;
 @end

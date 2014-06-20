@@ -28,7 +28,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rpe-C4-9BK" customClass="GPPSignInButton">
-                                <rect key="frame" x="99" y="384" width="134" height="62"/>
+                                <rect key="frame" x="20" y="181" width="134" height="62"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Google Sign In">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -36,28 +36,42 @@
                                 </state>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="jMp-Dw-hM3">
-                                <rect key="frame" x="34" y="89" width="240" height="128"/>
+                                <rect key="frame" x="20" y="90" width="83" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dr9-Kf-LZv">
-                                <rect key="frame" x="139" y="252" width="42" height="21"/>
+                                <rect key="frame" x="122" y="90" width="178" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2cG-GE-pf5">
-                                <rect key="frame" x="139" y="300" width="42" height="21"/>
+                                <rect key="frame" x="122" y="128" width="178" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Nl6-YM-Ho9">
+                                <rect key="frame" x="33" y="173" width="56" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="SignOut">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="SignOutButton:" destination="Gid-FT-qfK" eventType="touchUpInside" id="mGH-2z-dV8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="6zw-ZU-jti"/>
                     <connections>
+                        <outlet property="EmailId" destination="2cG-GE-pf5" id="L3K-Rz-OKD"/>
+                        <outlet property="UserAvtar" destination="jMp-Dw-hM3" id="Dkz-g7-j6x"/>
+                        <outlet property="UserNAme" destination="dr9-Kf-LZv" id="2Wd-OS-wfl"/>
                         <outlet property="signInButton" destination="Rpe-C4-9BK" id="Uol-Ta-NLf"/>
+                        <outlet property="signOutButton" destination="Nl6-YM-Ho9" id="Qhk-tF-A4m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s03-8X-ugj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -211,7 +225,7 @@
                         <outlet property="MenuTable" destination="sDq-o5-i8E" id="LRf-oY-ChP"/>
                         <outlet property="NewsSearch" destination="Gdd-l0-0pQ" id="tPV-Aw-r9b"/>
                         <segue destination="ce8-wE-jHM" kind="push" identifier="DetailedView" id="YVa-qF-LEs"/>
-                        <segue destination="Gid-FT-qfK" kind="modal" identifier="SignInView" id="Izu-b0-uUb"/>
+                        <segue destination="Gid-FT-qfK" kind="push" identifier="SignInView" id="Izu-b0-uUb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

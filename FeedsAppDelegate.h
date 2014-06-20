@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GoogleOpenSource/GoogleOpenSource.h>
+#import <GooglePlus/GooglePlus.h>
 
 @interface FeedsAppDelegate : UIResponder <UIApplicationDelegate>
 
