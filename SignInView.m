@@ -9,9 +9,13 @@
 #import "SignInView.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GooglePlus/GooglePlus.h>
+#import <Parse/Parse.h>
+#import "HistoryTableViewCell.h"
+#import "UIImageView+WebCache.h"
 @interface SignInView ()
 {
     GPPSignIn *signIn;
+    NSMutableArray *historyarray;
 }
 
 @end
@@ -54,6 +58,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     signIn.shouldFetchGooglePlusUser = YES;
     signIn.shouldFetchGoogleUserEmail = YES;
     [self reportAuthStatus];
+    
 }
 - (void)reportAuthStatus {
     if ([GPPSignIn sharedInstance].authentication) {
@@ -105,7 +110,6 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     });
 }
 
-
 - (void)presentSignInViewController:(UIViewController *)viewController {
     // This is an example of how you can implement it if your app is navigation-based.
     [[self navigationController] pushViewController:viewController animated:YES];
@@ -128,6 +132,8 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         // Perform other actions here
     }
 }
+
+
 - (void)finishedWithAuth: (GTMOAuth2Authentication *)auth
                    error: (NSError *) error {
     NSLog(@"Received error %@ and auth object %@",error, auth);
@@ -137,13 +143,32 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         NSLog(@"Received auth %@", auth);
         self.signOutButton.hidden=NO;
         [self reportAuthStatus];
-
         [self refreshInterfaceBasedOnSignIn];
+        PFUser *user = [PFUser user];
+        user.username =self.EmailId.text;
+        user.password =self.UserNAme.text;
+        user[@"Identifier"]=self.EmailId.text;
+        [user signUpInBackground];
+        PFQuery *history = [PFQuery queryWithClassName:@"history"];
+        NSLog(@"user5name %@",self.UserNAme.text);
+        [history whereKey:@"UserID" equalTo:self.EmailId.text];
+        [history  findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // The find succeeded.
+                historyarray=[[objects objectAtIndex:(objects.count-1)] valueForKey:@"Feeds"];
+                [self.HistoryTable reloadData];
+            } else {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
+            }
+        }];
     }
 }
+
 - (void)signOut {
     [[GPPSignIn sharedInstance] signOut];
 }
+
 - (void)disconnect {
     [[GPPSignIn sharedInstance] disconnect];
 }
@@ -176,6 +201,36 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         self.signInButton.alpha = 1.0;
         self.signOutButton.alpha = 0.5;
     }
+}
+
+//tableView
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+        return historyarray.count;
+    
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+        NSRange range;
+        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"history" forIndexPath:indexPath];
+        cell.HistoryTitle.text=[[historyarray objectAtIndex:indexPath.row] objectForKey: @"title"];
+        cell.HistoryDiscription.text=[[historyarray objectAtIndex:indexPath.row] objectForKey:@"description"];
+        [cell.HistoryImage setImageWithURL:[NSURL URLWithString:[[historyarray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
+        [cell.HistoryTitle setFont:[UIFont systemFontOfSize:13]];
+        [cell.HistoryTitle setLineBreakMode:NSLineBreakByWordWrapping];
+        cell.HistoryTitle.numberOfLines = 2; //will wrap text in new line
+        while ((range = [cell.HistoryDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
+            cell.HistoryDiscription.text = [cell.HistoryDiscription.text stringByReplacingCharactersInRange:range withString:@""];
+        [cell.HistoryDiscription setFont:[UIFont systemFontOfSize:10]];
+        cell.HistoryDiscription.numberOfLines=3;
+        [cell.HistoryDiscription sizeToFit];
+        return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
 }
 
 @end

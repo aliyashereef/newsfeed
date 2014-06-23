@@ -12,7 +12,6 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *CollectionView;
 @property (weak, nonatomic) IBOutlet UITableView *MenuTable;
 @property (weak, nonatomic) IBOutlet UISearchBar *NewsSearch;
-
 - (IBAction)MenuButton:(id)sender;
 @property (weak, nonatomic) IBOutlet UITableView *FeedsTable;
 @end

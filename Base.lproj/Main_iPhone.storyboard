@@ -62,12 +62,56 @@
                                     <action selector="SignOutButton:" destination="Gid-FT-qfK" eventType="touchUpInside" id="mGH-2z-dV8"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="22" sectionFooterHeight="22" id="MZj-qk-UuB">
+                                <rect key="frame" x="20" y="251" width="280" height="310"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="history" rowHeight="73" id="ZC0-JI-PTO" customClass="HistoryTableViewCell">
+                                        <rect key="frame" x="0.0" y="22" width="280" height="73"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZC0-JI-PTO" id="VWX-2c-ImQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="280" height="72"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="g8K-EM-stN">
+                                                    <rect key="frame" x="11" y="3" width="77" height="66"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AQ1-yU-rgw">
+                                                    <rect key="frame" x="96" y="3" width="172" height="28"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gC6-WQ-Jf2">
+                                                    <rect key="frame" x="96" y="39" width="172" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="HistoryDiscription" destination="gC6-WQ-Jf2" id="L4I-7X-enb"/>
+                                            <outlet property="HistoryImage" destination="g8K-EM-stN" id="Ni5-dx-5CQ"/>
+                                            <outlet property="HistoryTitle" destination="AQ1-yU-rgw" id="IXq-x7-nXo"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Gid-FT-qfK" id="chD-9g-nB6"/>
+                                    <outlet property="delegate" destination="Gid-FT-qfK" id="QFr-16-scr"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="6zw-ZU-jti"/>
                     <connections>
                         <outlet property="EmailId" destination="2cG-GE-pf5" id="L3K-Rz-OKD"/>
+                        <outlet property="HistoryTable" destination="MZj-qk-UuB" id="M9N-JW-XlR"/>
                         <outlet property="UserAvtar" destination="jMp-Dw-hM3" id="Dkz-g7-j6x"/>
                         <outlet property="UserNAme" destination="dr9-Kf-LZv" id="2Wd-OS-wfl"/>
                         <outlet property="signInButton" destination="Rpe-C4-9BK" id="Uol-Ta-NLf"/>

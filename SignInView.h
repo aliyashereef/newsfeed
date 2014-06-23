@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <GooglePlus/GooglePlus.h>
 @class GPPSignInButton;
-@interface SignInView : UIViewController<GPPSignInDelegate>
+@interface SignInView : UIViewController<GPPSignInDelegate,UITableViewDelegate>
 @property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 @property (weak, nonatomic) IBOutlet UIImageView *UserAvtar;
 @property (weak, nonatomic) IBOutlet UILabel *UserNAme;
 @property (weak, nonatomic) IBOutlet UILabel *EmailId;
 @property(weak, nonatomic) IBOutlet UIButton *signOutButton;
+@property (weak, nonatomic) IBOutlet UITableView *HistoryTable;
 - (IBAction)SignOutButton:(id)sender;
 @end

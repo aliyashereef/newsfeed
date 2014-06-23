@@ -10,6 +10,7 @@
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GooglePlus/GooglePlus.h>
+#import <Parse/Parse.h>
 
 @implementation FeedsAppDelegate
 - (BOOL)application: (UIApplication *)application openURL: (NSURL *)url sourceApplication: (NSString *)sourceApplication annotation: (id)annotation
@@ -18,7 +19,8 @@
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+    [Parse setApplicationId:@"UUNMeibITeFop7AjdjuUZuyeDBzLjYfMcVbOjEes"
+                  clientKey:@"pUKwxDLnlxq7DHLJMUHSkXiP498ONRdoZpgtXyvD"];
     // Override point for customization after application launch.
     return YES;
 }
