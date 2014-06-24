@@ -33,7 +33,7 @@
 
 - (void)viewDidLoad
 {
-    int allnewsindex,allnewsindex1=0,allnewsindex2=0,allnewsindex3=0,allnewsindex4=0,allnewsindex5=0;
+    int allnewsindex,AllNewsArrayindex;
     [super viewDidLoad];
     selectedrow=5;
     feed=[[FeedParse alloc] init];
@@ -52,26 +52,13 @@
     [AllNews addObject:[feed startparse:Hollywoodurl]];
     [AllNews addObject:[feed startparse:NationalInteresturl]];
     [AllNews addObject:[feed startparse:Sportsurl]];
-    for(allnewsindex=0;allnewsindex<=50;allnewsindex++)
+    for(allnewsindex=0;allnewsindex<5;allnewsindex++)
     {
-        if((allnewsindex%5)==0)
+        for(AllNewsArrayindex=0;AllNewsArrayindex<5;AllNewsArrayindex++)
         {
-            [AllNewsArray addObject:[[AllNews objectAtIndex:(0)] objectAtIndex:(allnewsindex1)]];
-            allnewsindex1++;
+            [AllNewsArray addObject:[[AllNews objectAtIndex:allnewsindex] objectAtIndex:AllNewsArrayindex]];
         }
-        if ((allnewsindex%5)==1) {
-            [AllNewsArray addObject:[[AllNews objectAtIndex:(1)] objectAtIndex:(allnewsindex2)]];
-            allnewsindex2++;
-        } else if ((allnewsindex%5)==2){
-            [AllNewsArray addObject:[[AllNews objectAtIndex:(2)] objectAtIndex:(allnewsindex3)]];
-            allnewsindex3++;
-        }else if ((allnewsindex%5)==3){
-            [AllNewsArray addObject:[[AllNews objectAtIndex:(3)] objectAtIndex:(allnewsindex4)]];
-            allnewsindex4++;
-        }else if ((allnewsindex%5)==4){
-//            [AllNewsArray addObject:[[AllNewsArray objectAtIndex:(4)] objectAtIndex:(allnewsindex5)]];
-            allnewsindex5++;
-        }
+        
     }
 
 }

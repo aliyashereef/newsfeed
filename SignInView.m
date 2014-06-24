@@ -47,8 +47,9 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     [signIn trySilentAuthentication];
 }
 - (void) viewWillAppear:(BOOL)animated
-{   [signIn trySilentAuthentication];
+{
     self.signOutButton.hidden=YES;
+    [signIn trySilentAuthentication];
     historyarray=[[NSMutableArray alloc] init];
     signIn.shouldFetchGooglePlusUser = YES;
     signIn.shouldFetchGoogleUserEmail = YES;
