@@ -39,7 +39,7 @@
     feed=[[FeedParse alloc] init];
     readarticle=[[NSMutableArray alloc] init];
     menulist=[NSArray arrayWithObjects:@"SignIn",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",nil];
-    menulist1= [NSArray arrayWithObjects:@"Sign Out",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",nil];
+    menulist1= [NSArray arrayWithObjects:@"My Profile",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",nil];
     MoviewReiviewurl =[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/movie-review/feed/"];
     Politicsurl=[NSURL URLWithString:@"http://indianexpress.com/section/india/politics/feed/"];
     Sportsurl=[NSURL URLWithString:@"http://indianexpress.com/section/sports/feed/"];
@@ -88,9 +88,11 @@
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"log"])
     {
         loginref=1;
+        [self.MenuTable reloadData];
     }
     else{
-        loginref=1;
+        loginref=0;
+        [self.MenuTable reloadData];
     }
     timer= [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)4.0
                                             target:(id)self selector:@selector(cellchange)userInfo:(id)nil
@@ -135,11 +137,11 @@
         NSString *menu;
         if(loginref==1)
         {
-            menu=[menulist objectAtIndex:indexPath.row];
+            menu=[menulist1 objectAtIndex:indexPath.row];
         }
         else
         {
-            menu=[menulist1 objectAtIndex:indexPath.row];
+            menu=[menulist objectAtIndex:indexPath.row];
         }
         
         cell.MainLabel.text=menu;
@@ -180,17 +182,6 @@
             [timer invalidate];
             timer=nil;
             [self performSegueWithIdentifier:@"SignInView" sender:self];
-//            if(loginref==1)
-//            {
-//                [self performSegueWithIdentifier:@"SignInView" sender:self];
-//            }
-//            else
-//            {
-//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"log"];
-//                [[NSUserDefaults standardUserDefaults] synchronize];
-//                loginref=1;
-////                [self.MenuTable reloadData];
-//            }
         }else{
         selectedrow=indexPath.row;
         [self.FeedsTable reloadData];
@@ -242,7 +233,6 @@
     DetailedView *zoom = [segue destinationViewController];
     if([segue.identifier isEqualToString:@"DetailedView"])
     {
-        
         if (didselectcollection==1)
         {
             [readarticle addObject:[AllNewsArray objectAtIndex:(collectionindex)]];
@@ -256,7 +246,7 @@
         }else
         {
             zoom.feed=[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:selectedfeed];
-            [readarticle addObject:[[AllNews objectAtIndex:(selectedfeed)]objectAtIndex:selectedfeed]];
+            [readarticle addObject:[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:selectedfeed]];
         }
     }
     else

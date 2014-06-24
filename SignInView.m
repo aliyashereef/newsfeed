@@ -12,10 +12,12 @@
 #import <Parse/Parse.h>
 #import "HistoryTableViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "DetailedView.h"
 @interface SignInView ()
 {
     GPPSignIn *signIn;
     NSMutableArray *historyarray;
+    int historyindex;
 }
 
 @end
@@ -39,22 +41,15 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     signIn = [GPPSignIn sharedInstance];
     signIn.shouldFetchGooglePlusUser = YES;
     signIn.shouldFetchGoogleUserEmail = YES;
-    // You previously set kClientId in the "Initialize the Google+ client" step
-    
     signIn.delegate = self;
-
     signIn.clientID = kClientId;
-    
-    // Uncomment one of these two statements for the scope you chose in the previous step
-    signIn.scopes = @[ kGTLAuthScopePlusLogin ];  // "https://www.googleapis.com/auth/plus.login" scope
-//    signIn.scopes = @[ @"profile" ];            // "profile" scope
-    // Optional: declare signIn.actions, see "app activities"
-    signIn.delegate = self;
-    // Do any additional setup after loading the view.
+    signIn.scopes = @[ kGTLAuthScopePlusLogin ];
     [signIn trySilentAuthentication];
 }
 - (void) viewWillAppear:(BOOL)animated
 {   [signIn trySilentAuthentication];
+    self.signOutButton.hidden=YES;
+    historyarray=[[NSMutableArray alloc] init];
     signIn.shouldFetchGooglePlusUser = YES;
     signIn.shouldFetchGoogleUserEmail = YES;
     [self reportAuthStatus];
@@ -77,9 +72,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         self.UserAvtar.image = [UIImage imageNamed:kPlaceholderAvatarImageName];
         return;
     }
-    
     self.EmailId.text = [GPPSignIn sharedInstance].userEmail;
-    
     // The googlePlusUser member will be populated only if the appropriate
     // scope is set when signing in.
     GTLPlusPerson *person = [GPPSignIn sharedInstance].googlePlusUser;
@@ -100,7 +93,6 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
             NSURL *imageURL = [NSURL URLWithString:imageURLString];
             avatarData = [NSData dataWithContentsOfURL:imageURL];
         }
-        
         if (avatarData) {
             // Update UI from the main thread when available
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -109,7 +101,6 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         }
     });
 }
-
 - (void)presentSignInViewController:(UIViewController *)viewController {
     // This is an example of how you can implement it if your app is navigation-based.
     [[self navigationController] pushViewController:viewController animated:YES];
@@ -141,23 +132,33 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         // Do some error handling here.
     } else {
         NSLog(@"Received auth %@", auth);
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"log"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         self.signOutButton.hidden=NO;
+        self.signOutButton.highlighted=YES;
         [self reportAuthStatus];
         [self refreshInterfaceBasedOnSignIn];
         PFUser *user = [PFUser user];
         user.username =self.EmailId.text;
         user.password =self.UserNAme.text;
         user[@"Identifier"]=self.EmailId.text;
-        [user signUpInBackground];
+        [user signUp];
+        [PFUser logInWithUsernameInBackground:self.EmailId.text password:self.UserNAme.text
+                                        block:^(PFUser *user, NSError *error) {}];
         PFQuery *history = [PFQuery queryWithClassName:@"history"];
-        NSLog(@"user5name %@",self.UserNAme.text);
+        [history orderByAscending:@"createdAt"];
         [history whereKey:@"UserID" equalTo:self.EmailId.text];
         [history  findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 // The find succeeded.
-                historyarray=[[objects objectAtIndex:(objects.count-1)] valueForKey:@"Feeds"];
+                for(int i=objects.count;i>0;i--){
+                    NSLog(@"FEED COUNT === %d",[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count]);
+                    for (int j=[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count];j>0;j--){
+                        [historyarray addObject:[[[objects objectAtIndex:(i-1)] valueForKey:@"Feeds"] objectAtIndex:(j-1)]];
+                    }
+                }
                 [self.HistoryTable reloadData];
-            } else {
+                    } else {
                 // Log details of the failure
                 NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
@@ -167,6 +168,9 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
 
 - (void)signOut {
     [[GPPSignIn sharedInstance] signOut];
+    [PFUser logOut];
+    [historyarray removeAllObjects];
+    [self.HistoryTable reloadData];
 }
 
 - (void)disconnect {
@@ -183,6 +187,8 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
 }
 
 - (IBAction)SignOutButton:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"log"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self signOut];
     [self refreshInterfaceBasedOnSignIn];
     [self reportAuthStatus];
@@ -205,8 +211,13 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
 
 //tableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
+    if(historyarray.count<10)
+    {
         return historyarray.count;
+    }else
+    {
+        return 10;
+    }
     
 }
 
@@ -230,7 +241,15 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    historyindex=indexPath.row;
+    [self performSegueWithIdentifier:@"ProfilePush" sender:self];
 }
-
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    DetailedView *zoom = [segue destinationViewController];
+    if([segue.identifier isEqualToString:@"ProfilePush"])
+    {
+        zoom.feed=[historyarray objectAtIndex:historyindex];
+    }
+}
 @end
