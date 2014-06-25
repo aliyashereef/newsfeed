@@ -23,7 +23,9 @@
     int selectedrow,loginref,selectedfeed,didscroll,collectionindex,didselectcollection,newssearched;
     NSTimer *timer;
     FeedParse *feed;
-    
+    UIBarButtonItem *flipButton,*menubutton;
+    UISearchBar *search;
+    UIView *searchBarView;
 }
 
 @end
@@ -35,11 +37,11 @@
 {
     int allnewsindex,AllNewsArrayindex;
     [super viewDidLoad];
-    selectedrow=5;
+    selectedrow=6;
     feed=[[FeedParse alloc] init];
     readarticle=[[NSMutableArray alloc] init];
-    menulist=[NSArray arrayWithObjects:@"SignIn",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",nil];
-    menulist1= [NSArray arrayWithObjects:@"My Profile",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",nil];
+    menulist=[NSArray arrayWithObjects:@"SignIn",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",@"AllNews",nil];
+    menulist1= [NSArray arrayWithObjects:@"My Profile",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",@"AllNews",nil];
     MoviewReiviewurl =[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/movie-review/feed/"];
     Politicsurl=[NSURL URLWithString:@"http://indianexpress.com/section/india/politics/feed/"];
     Sportsurl=[NSURL URLWithString:@"http://indianexpress.com/section/sports/feed/"];
@@ -58,9 +60,20 @@
         {
             [AllNewsArray addObject:[[AllNews objectAtIndex:allnewsindex] objectAtIndex:AllNewsArrayindex]];
         }
-        
     }
-
+    [AllNews addObject:AllNewsArray];
+    flipButton = [[UIBarButtonItem alloc]
+                                   initWithTitle:@"Search"
+                                   style:UIBarButtonItemStyleBordered
+                                   target:self
+                                   action:@selector(clicksearchbutton)];
+    menubutton=[[UIBarButtonItem alloc]
+                initWithTitle:@"Menu"
+                style:UIBarButtonItemStyleBordered
+                target:self
+                action:@selector(MenuButton)];
+    self.navigationItem.rightBarButtonItem = flipButton;
+    self.navigationItem.leftBarButtonItem=menubutton;
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,7 +97,7 @@
     timer= [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)4.0
                                             target:(id)self selector:@selector(cellchange)userInfo:(id)nil
                                            repeats:(BOOL)YES];
-
+    self.navigationItem.title=@"NewsFeeds";
 }
 
 -(void)cellchange
@@ -100,12 +113,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView==self.MenuTable)
     {
-        return 6;
+        return 7;
     }else
     {
-        if(selectedrow==6)
-            return SearchedNewsArray.count;
-        return 50;
+        return [[AllNews objectAtIndex:(selectedrow-1)] count];
     }
 }
 
@@ -205,7 +216,7 @@
     
 }
 
-- (IBAction)MenuButton:(id)sender {
+- (IBAction)MenuButton{
     [UIView animateWithDuration:0.5 animations:^{
         self.MenuTable.frame =  CGRectMake(0,75, 150, 360);
         self.FeedsTable.frame= CGRectMake(153, 280, 320, 516);
@@ -226,7 +237,7 @@
             zoom.feed=[AllNewsArray objectAtIndex:(collectionindex)];
             didselectcollection=0;
         }
-        else if (selectedrow==6)
+        else if (selectedrow==7)
         {
             zoom.feed=[SearchedNewsArray objectAtIndex:selectedfeed];
             [readarticle addObject:[SearchedNewsArray objectAtIndex:(selectedfeed)]];
@@ -257,23 +268,36 @@
         self.FeedsTable.frame=CGRectMake(0,60, 320, 500);
         self.CollectionView.frame=CGRectMake(0,0, 320, 0);
     }completion:nil];
-    [self.NewsSearch resignFirstResponder];
     SearchedNewsArray=[[NSMutableArray alloc] init];
-    for (int i=0; i<AllNews.count; i++) {
-        for (int j=0;j<[[AllNews objectAtIndex:i] count]; j++) {
-            if (([[[[AllNews objectAtIndex:i]objectAtIndex:j] valueForKey:@"content:encoded"] rangeOfString:self.NewsSearch.text].location == NSNotFound) && ([[[[AllNews objectAtIndex:i]objectAtIndex:j] valueForKey:@"title"] rangeOfString:self.NewsSearch.text].location == NSNotFound))
-            {
-                NSLog(@"string does not contain %@",self.NewsSearch.text);
-            } else {
-                NSLog(@"string contains %@",self.NewsSearch.text);
-                [SearchedNewsArray addObject:[[AllNews objectAtIndex:i]objectAtIndex:j]];
-            }
+    for (int j=0;j<[[AllNews objectAtIndex:(selectedrow-1)] count]; j++) {
+        if (([[[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j] valueForKey:@"content:encoded"] rangeOfString:search.text].location == NSNotFound) && ([[[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j] valueForKey:@"title"] rangeOfString:search.text].location == NSNotFound))
+        {
+        } else {
+            [SearchedNewsArray addObject:[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j]];
         }
     }
+    if(AllNews.count==6)
     [AllNews addObject:SearchedNewsArray];
-    [AllNews removeObjectAtIndex:5];
-    selectedrow=6;
+    [AllNews removeObjectAtIndex:6];
+    selectedrow=7;
     [AllNews addObject:SearchedNewsArray];
+    [search resignFirstResponder];
+    self.navigationItem.titleView=Nil;
+    self.navigationItem.rightBarButtonItem=flipButton;
+    self.navigationItem.leftBarButtonItem=menubutton;
+    self.navigationItem.title=@"NewsFeeds";
     [self.FeedsTable reloadData];
+}
+-(IBAction)clicksearchbutton
+{
+    search= [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 400.0, 44.0)];
+    search.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 400.0, 44.0)];
+    searchBarView.autoresizingMask = 0;
+    self.navigationItem.rightBarButtonItem=Nil;
+    self.navigationItem.leftBarButtonItem=Nil;
+    search.delegate = self;
+   [searchBarView addSubview:search];
+    self.navigationItem.titleView = searchBarView;
 }
 @end

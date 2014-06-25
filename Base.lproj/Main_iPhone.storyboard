@@ -128,7 +128,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s03-8X-ugj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="138" y="-556"/>
+            <point key="canvasLocation" x="670" y="-756"/>
         </scene>
         <!--Feeds View Controller-->
         <scene sceneID="ufC-wZ-h7g">
@@ -177,17 +177,9 @@
                                 <rect key="frame" x="0.0" y="248" width="111" height="360"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="Gdd-l0-0pQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="111" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="vXZ-lx-hvc" id="NEL-46-qHA"/>
-                                    </connections>
-                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MainMenu" rowHeight="43" id="NBs-Fw-P4q" customClass="MenuTableCell">
-                                        <rect key="frame" x="0.0" y="66" width="111" height="43"/>
+                                        <rect key="frame" x="0.0" y="22" width="111" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NBs-Fw-P4q" id="TwH-kG-IXZ">
                                             <rect key="frame" x="0.0" y="0.0" width="111" height="42"/>
@@ -259,23 +251,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="pDP-3J-88T">
                         <nil key="title"/>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="New-nz-09h">
-                            <rect key="frame" x="8" y="6" width="304" height="33"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" title="NewsFeeds">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="MenuButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="IjW-Nx-ONN"/>
-                            </connections>
-                        </button>
                     </navigationItem>
                     <connections>
                         <outlet property="CollectionView" destination="Aq6-5U-aI4" id="r5p-nH-n0w"/>
                         <outlet property="FeedsTable" destination="gDC-Y6-wLt" id="ybQ-FD-seE"/>
                         <outlet property="MenuTable" destination="sDq-o5-i8E" id="LRf-oY-ChP"/>
-                        <outlet property="NewsSearch" destination="Gdd-l0-0pQ" id="tPV-Aw-r9b"/>
                         <segue destination="ce8-wE-jHM" kind="push" identifier="DetailedView" id="YVa-qF-LEs"/>
                         <segue destination="Gid-FT-qfK" kind="push" identifier="SignInView" id="Izu-b0-uUb"/>
                     </connections>
@@ -320,7 +300,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <inset key="contentInset" minX="0.0" minY="0.0" maxX="0.0" maxY="250"/>
+                                <inset key="contentInset" minX="0.0" minY="0.0" maxX="0.0" maxY="430"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -336,7 +316,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3h2-oH-tuz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="558" y="88"/>
+            <point key="canvasLocation" x="1228" y="88"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -345,6 +325,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="wd2-5J-1Wx"/>
+        <segue reference="YVa-qF-LEs"/>
     </inferredMetricsTieBreakers>
 </document>
