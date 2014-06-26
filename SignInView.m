@@ -150,19 +150,19 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         [history orderByAscending:@"createdAt"];
         [history whereKey:@"UserID" equalTo:self.EmailId.text];
         [history  findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                // The find succeeded.
-                for(int i=objects.count;i>0;i--){
-                    NSLog(@"FEED COUNT === %d",[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count]);
-                    for (int j=[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count];j>0;j--){
-                        [historyarray addObject:[[[objects objectAtIndex:(i-1)] valueForKey:@"Feeds"] objectAtIndex:(j-1)]];
-                    }
+        if (!error) {
+            // The find succeeded.
+            for(int i=objects.count;i>0;i--){
+                NSLog(@"FEED COUNT === %d",[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count]);
+                for (int j=[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count];j>0;j--){
+                    [historyarray addObject:[[[objects objectAtIndex:(i-1)] valueForKey:@"Feeds"] objectAtIndex:(j-1)]];
                 }
-                [self.HistoryTable reloadData];
-                    } else {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
+            [self.HistoryTable reloadData];
+                } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
         }];
     }
 }

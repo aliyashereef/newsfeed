@@ -43,7 +43,7 @@
     NSRange rangeofstring;
     self.DetailedViewContent.text =[self.feed valueForKey:@"content:encoded"];
     while ((rangeofstring = [self.DetailedViewContent.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-        self.DetailedViewContent.text = [self.DetailedViewContent.text stringByReplacingCharactersInRange:rangeofstring   withString:@""];
+    self.DetailedViewContent.text = [self.DetailedViewContent.text stringByReplacingCharactersInRange:rangeofstring   withString:@""];
     [self.DetailedViewContent setFont:[UIFont systemFontOfSize:13]];
     self.DetailedViewContent.numberOfLines = 0;
     [self.DetailedViewContent sizeToFit];

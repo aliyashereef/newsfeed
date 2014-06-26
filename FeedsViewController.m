@@ -130,7 +130,6 @@
         if(cell == nil)
         {
             cell = [[MenuTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-            
         }
         NSString *menu;
         if(loginref==1)
@@ -148,20 +147,19 @@
     }
     if (tableView==self.FeedsTable)
     {   NSRange range;
-        FeedsTableCell *cell = (FeedsTableCell*)[tableView dequeueReusableCellWithIdentifier:@"FeedMenu" forIndexPath:indexPath];[cell.FeedImage setImageWithURL:[NSURL URLWithString:[[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
-       
-            cell.FeedTitle.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey: @"title"];
-            cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"description"];
-            [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
-            [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
-            cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
-                        while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-                cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
-            [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
-            cell.FeedDiscription.numberOfLines=3;
-            [cell.FeedDiscription sizeToFit];
-            
-                return cell;
+        FeedsTableCell *cell = (FeedsTableCell*)[tableView dequeueReusableCellWithIdentifier:@"FeedMenu" forIndexPath:indexPath];
+        [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
+        cell.FeedTitle.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey: @"title"];
+        cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"description"];
+        [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
+        [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
+        cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
+        while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
+        cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
+        [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
+        cell.FeedDiscription.numberOfLines=3;
+        [cell.FeedDiscription sizeToFit];
+        return cell;
     }
     return NULL;
     
@@ -212,8 +210,6 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath  {
     didselectcollection=1;
     [self performSegueWithIdentifier:@"DetailedView" sender:nil];
-    
-    
 }
 
 - (IBAction)MenuButton{
@@ -221,8 +217,7 @@
         self.MenuTable.frame =  CGRectMake(0,75, 150, 360);
         self.FeedsTable.frame= CGRectMake(153, 280, 320, 516);
         self.CollectionView.frame=CGRectMake(153,0, 320, 280);
-        
-    }completion:nil];
+        }completion:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -249,16 +244,16 @@
     }
     else
     {   if(readarticle.count !=0)
-    {
-        PFUser *currentUser = [PFUser currentUser];
-        if (currentUser) {
-            PFObject *history = [PFObject objectWithClassName:@"history"];
-            history[@"Feeds"] = readarticle;
-            history[@"UserID"]=currentUser.username;
-            [history save];
-            [readarticle removeAllObjects];
+        {
+            PFUser *currentUser = [PFUser currentUser];
+            if (currentUser) {
+                PFObject *history = [PFObject objectWithClassName:@"history"];
+                history[@"Feeds"] = readarticle;
+                history[@"UserID"]=currentUser.username;
+                [history save];
+                [readarticle removeAllObjects];
+            }
         }
-    }        
     }
 }
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
