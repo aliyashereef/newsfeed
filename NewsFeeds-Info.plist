@@ -20,6 +20,10 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>FacebookAppID</key>
+	<string>1636411339918298</string>
+	<key>FacebookDisplayName</key>
+	<string>NewsFeeds</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,6 +34,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>NewsFeeds.NewsFeeds</string>
+				<string>fb1636411339918298</string>
 			</array>
 		</dict>
 	</array>

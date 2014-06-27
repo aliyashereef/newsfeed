@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface DetailedView : UIViewController
 @property (weak,nonatomic) NSDictionary *feed;
@@ -15,5 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *DetailedViewDate;
 @property (weak, nonatomic) IBOutlet UILabel *DetailedViewContent;
 @property (weak, nonatomic) IBOutlet UIScrollView *DetailViewScroll;
+- (IBAction)ShareButton:(id)sender;
+
 
 @end

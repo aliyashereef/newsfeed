@@ -116,7 +116,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     if ([[GPPSignIn sharedInstance] authentication]) {
         // The user is signed in.
         self.signInButton.hidden = YES;
-        self.signOutButton.enabled=YES;
+        self.signOutButton.hidden=NO;
         // Perform other actions here, such as showing a sign-out button
     } else {
         self.signInButton.hidden = NO;
@@ -173,7 +173,6 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     [historyarray removeAllObjects];
     [self.HistoryTable reloadData];
 }
-
 - (void)disconnect {
     [[GPPSignIn sharedInstance] disconnect];
 }
@@ -197,10 +196,8 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
 }
 - (void)updateButtons {
     BOOL authenticated = ([GPPSignIn sharedInstance].authentication != nil);
-    
     self.signInButton.enabled = !authenticated;
     self.signOutButton.enabled = authenticated;
-    
     if (authenticated) {
         self.signInButton.alpha = 0.5;
         self.signOutButton.alpha =1.0;
@@ -222,23 +219,22 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        NSRange range;
-        HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"history" forIndexPath:indexPath];
-        cell.HistoryTitle.text=[[historyarray objectAtIndex:indexPath.row] objectForKey: @"title"];
-        cell.HistoryDiscription.text=[[historyarray objectAtIndex:indexPath.row] objectForKey:@"description"];
-        [cell.HistoryImage setImageWithURL:[NSURL URLWithString:[[historyarray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
-        [cell.HistoryTitle setFont:[UIFont systemFontOfSize:13]];
-        [cell.HistoryTitle setLineBreakMode:NSLineBreakByWordWrapping];
-        cell.HistoryTitle.numberOfLines = 2; //will wrap text in new line
-        while ((range = [cell.HistoryDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-            cell.HistoryDiscription.text = [cell.HistoryDiscription.text stringByReplacingCharactersInRange:range withString:@""];
-        [cell.HistoryDiscription setFont:[UIFont systemFontOfSize:10]];
-        cell.HistoryDiscription.numberOfLines=3;
-        [cell.HistoryDiscription sizeToFit];
-        return cell;
+    NSRange range;
+    HistoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"history" forIndexPath:indexPath];
+    cell.HistoryTitle.text=[[historyarray objectAtIndex:indexPath.row] objectForKey: @"title"];
+    cell.HistoryDiscription.text=[[historyarray objectAtIndex:indexPath.row] objectForKey:@"description"];
+    [cell.HistoryImage setImageWithURL:[NSURL URLWithString:[[historyarray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
+    [cell.HistoryTitle setFont:[UIFont systemFontOfSize:13]];
+    [cell.HistoryTitle setLineBreakMode:NSLineBreakByWordWrapping];
+    cell.HistoryTitle.numberOfLines = 2; //will wrap text in new line
+    while ((range = [cell.HistoryDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
+        cell.HistoryDiscription.text = [cell.HistoryDiscription.text stringByReplacingCharactersInRange:range withString:@""];
+    [cell.HistoryDiscription setFont:[UIFont systemFontOfSize:10]];
+    cell.HistoryDiscription.numberOfLines=3;
+    [cell.HistoryDiscription sizeToFit];
+    return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
