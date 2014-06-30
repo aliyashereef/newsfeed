@@ -153,7 +153,6 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         if (!error) {
             // The find succeeded.
             for(int i=objects.count;i>0;i--){
-                NSLog(@"FEED COUNT === %d",[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count]);
                 for (int j=[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count];j>0;j--){
                     [historyarray addObject:[[[objects objectAtIndex:(i-1)] valueForKey:@"Feeds"] objectAtIndex:(j-1)]];
                 }

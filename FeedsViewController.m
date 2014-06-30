@@ -50,7 +50,7 @@
     AllNewsArray=[[NSMutableArray alloc] init];
     AllNews=[[NSMutableArray alloc] init];
     [AllNews addObject:[feed startparse:Politicsurl]];
-    [AllNews addObject:[feed startparse:MoviewReiviewurl]];
+    [AllNews addObject:[feed startparse:MoviewReiviewurl]]; 
     [AllNews addObject:[feed startparse:Hollywoodurl]];
     [AllNews addObject:[feed startparse:NationalInteresturl]];
     [AllNews addObject:[feed startparse:Sportsurl]];
@@ -283,6 +283,20 @@
     self.navigationItem.title=@"NewsFeeds";
     [self.FeedsTable reloadData];
 }
+ -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if([search.text isEqualToString:@""])
+        
+    {
+        [search resignFirstResponder];
+        self.navigationItem.titleView=Nil;
+        self.navigationItem.rightBarButtonItem=flipButton;
+        self.navigationItem.leftBarButtonItem=menubutton;
+        self.navigationItem.title=@"NewsFeeds";
+        [self.FeedsTable reloadData];
+    }
+}
+
 -(IBAction)clicksearchbutton
 {
     search= [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 400.0, 44.0)];
@@ -294,5 +308,7 @@
     search.delegate = self;
    [searchBarView addSubview:search];
     self.navigationItem.titleView = searchBarView;
+    [search becomeFirstResponder];
+
 }
 @end
