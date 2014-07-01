@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface HistoryTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *HistoryImage;
-@property (weak, nonatomic) IBOutlet UILabel *HistoryTitle;
-@property (weak, nonatomic) IBOutlet UILabel *HistoryDiscription;
+    @property (weak, nonatomic) IBOutlet UIImageView *HistoryImage;
+    @property (weak, nonatomic) IBOutlet UILabel *HistoryTitle;
+    @property (weak, nonatomic) IBOutlet UILabel *HistoryDiscription;
 
 @end

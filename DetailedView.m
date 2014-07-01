@@ -10,6 +10,9 @@
 #import "UIImageView+WebCache.h"
 
 @interface DetailedView ()
+{
+    int offsety;
+}
 
 @end
 
@@ -26,6 +29,16 @@
 
 - (void)viewDidLoad
 {
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    int ver = [version intValue];
+    if (ver < 7){
+        offsety=64;
+        self.DetailViewScroll.frame=CGRectMake(0,90-offsety, 320, 516);
+        //iOS 6 work
+    }
+    else{
+        //iOS 7 related work
+    }
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }

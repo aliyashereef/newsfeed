@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <GooglePlus/GooglePlus.h>
 @interface FeedsViewController : UIViewController<UITableViewDelegate,UISearchBarDelegate,NSXMLParserDelegate>
-@property (weak, nonatomic) IBOutlet UICollectionView *CollectionView;
-@property (weak, nonatomic) IBOutlet UITableView *MenuTable;
-@property (weak, nonatomic) IBOutlet UITableView *FeedsTable;
+    @property (weak, nonatomic) IBOutlet UICollectionView *CollectionView;
+    @property (weak, nonatomic) IBOutlet UITableView *MenuTable;
+    @property (weak, nonatomic) IBOutlet UITableView *FeedsTable;
 @end

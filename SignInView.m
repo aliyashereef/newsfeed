@@ -17,7 +17,7 @@
 {
     GPPSignIn *signIn;
     NSMutableArray *historyarray;
-    int historyindex;
+    int historyindex,offsety;
 }
 
 @end
@@ -37,6 +37,22 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
 }
 - (void)viewDidLoad
 {
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    int ver = [version intValue];
+    if (ver < 7){
+        offsety=64;
+        self.UserAvtar.frame=CGRectMake(20,90-offsety, 83, 75);
+        self.UserNAme.frame=CGRectMake(122,90-offsety, 178, 21);
+        self.EmailId.frame=CGRectMake(122,111-offsety,178, 21);
+        self.signOutButton.frame=CGRectMake(33,173-offsety,56, 30);
+        self.signInButton.frame=CGRectMake(20,173-offsety,134, 62);
+        self.HistoryTable.frame=CGRectMake(20,251-offsety,280, 310);
+        self.historylabel.frame=CGRectMake(20,222-offsety,83, 21);
+        //iOS 6 work
+    }
+    else{
+        //iOS 7 related work
+    }
     [super viewDidLoad];
     signIn = [GPPSignIn sharedInstance];
     signIn.shouldFetchGooglePlusUser = YES;

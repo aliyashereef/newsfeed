@@ -20,7 +20,7 @@
     NSArray *menulist,*menulist1;
     NSURL *Politicsurl,*MoviewReiviewurl,*Sportsurl,*Hollywoodurl,*NationalInteresturl;
     NSMutableArray *AllNewsArray,*AllNews,*SearchedNewsArray,*readarticle;
-    int selectedrow,loginref,selectedfeed,didscroll,collectionindex,didselectcollection,newssearched;
+    int selectedrow,loginref,selectedfeed,didscroll,collectionindex,didselectcollection,newssearched,menuclicked,offsetx,offsety;
     NSTimer *timer;
     FeedParse *feed;
     UIBarButtonItem *flipButton,*menubutton;
@@ -35,6 +35,15 @@
 
 - (void)viewDidLoad
 {
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    int ver = [version intValue];
+    if (ver < 7){
+        offsety=64;
+        //iOS 6 work
+    }
+    else{
+        //iOS 7 related work
+    }
     int allnewsindex,AllNewsArrayindex;
     [super viewDidLoad];
     selectedrow=6;
@@ -82,9 +91,10 @@
     // Dispose of any resources that can be recreated.
 }
 - (void) viewWillAppear:(BOOL)animated{
-    self.MenuTable.frame=CGRectMake(0, 75, 0,360);
-    self.FeedsTable.frame=CGRectMake(0,280, 320, 288);
-    self.CollectionView.frame=CGRectMake(0,0, 320, 280);
+    menuclicked=0;
+    self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,360);
+    self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 288);
+    self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"log"])
     {
         loginref=1;
@@ -162,16 +172,15 @@
         return cell;
     }
     return NULL;
-    
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(tableView==self.MenuTable)
     {
         [UIView animateWithDuration:0.5 animations:^{
-            self.MenuTable.frame=CGRectMake(0, 75, 0,600);
-            self.FeedsTable.frame=CGRectMake(0,280, 320, 516);
-            self.CollectionView.frame=CGRectMake(0,0, 320, 280);
+            self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,600);
+            self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
+            self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
         }completion:nil];
         if(indexPath.row==0)
         {
@@ -213,11 +222,23 @@
 }
 
 - (IBAction)MenuButton{
+    if(menuclicked==0)
+    {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame =  CGRectMake(0,75, 150, 360);
-        self.FeedsTable.frame= CGRectMake(153, 280, 320, 516);
-        self.CollectionView.frame=CGRectMake(153,0, 320, 280);
+        self.MenuTable.frame =  CGRectMake(0,75-offsety, 150, 360);
+        self.FeedsTable.frame= CGRectMake(153, 280-offsety, 320, 516);
+        self.CollectionView.frame=CGRectMake(153,0-offsety, 320, 280);
         }completion:nil];
+        menuclicked=1;
+    }else
+    {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,600);
+        self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
+        self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
+    }completion:nil];
+        menuclicked=0;
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -259,9 +280,9 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame=CGRectMake(0, 75, 0,600);
-        self.FeedsTable.frame=CGRectMake(0,60, 320, 500);
-        self.CollectionView.frame=CGRectMake(0,0, 320, 0);
+        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,600);
+        self.FeedsTable.frame=CGRectMake(0,60-offsety, 320, 500);
+        self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 0);
     }completion:nil];
     SearchedNewsArray=[[NSMutableArray alloc] init];
     for (int j=0;j<[[AllNews objectAtIndex:(selectedrow-1)] count]; j++) {
