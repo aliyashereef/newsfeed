@@ -25,8 +25,10 @@ static NSString * const kPlaceholderUserName = @"<Name>";
 static NSString * const kPlaceholderEmailAddress = @"<Email>";
 static NSString * const kPlaceholderAvatarImageName = @"PlaceholderAvatar.png";
 static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9a8r.apps.googleusercontent.com";
+
 @implementation SignInView
 @synthesize signInButton;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -53,6 +55,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     else{
         //iOS 7 related work
     }
+    //initialising sign in button
     [super viewDidLoad];
     signIn = [GPPSignIn sharedInstance];
     signIn.shouldFetchGooglePlusUser = YES;
@@ -155,11 +158,13 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         self.signOutButton.highlighted=YES;
         [self reportAuthStatus];
         [self refreshInterfaceBasedOnSignIn];
+        //registering user into parse
         PFUser *user = [PFUser user];
         user.username =self.EmailId.text;
         user.password =self.UserNAme.text;
         user[@"Identifier"]=self.EmailId.text;
         [user signUp];
+        //fetching user history
         [PFUser logInWithUsernameInBackground:self.EmailId.text password:self.UserNAme.text
                                         block:^(PFUser *user, NSError *error) {}];
         PFQuery *history = [PFQuery queryWithClassName:@"history"];

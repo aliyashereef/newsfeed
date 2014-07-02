@@ -49,6 +49,7 @@
     selectedrow=6;
     feed=[[FeedParse alloc] init];
     readarticle=[[NSMutableArray alloc] init];
+    //setting all the url
     menulist=[NSArray arrayWithObjects:@"SignIn",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",@"AllNews",nil];
     menulist1= [NSArray arrayWithObjects:@"My Profile",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",@"AllNews",nil];
     MoviewReiviewurl =[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/movie-review/feed/"];
@@ -56,6 +57,7 @@
     Sportsurl=[NSURL URLWithString:@"http://indianexpress.com/section/sports/feed/"];
     NationalInteresturl=[NSURL URLWithString:@"http://indianexpress.com/print/national-interest/feed/"];
     Hollywoodurl=[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/hollywood/feed/"];
+    //parsing
     AllNewsArray=[[NSMutableArray alloc] init];
     AllNews=[[NSMutableArray alloc] init];
     [AllNews addObject:[feed startparse:Politicsurl]];
@@ -71,6 +73,7 @@
         }
     }
     [AllNews addObject:AllNewsArray];
+    //adding navigationbarbuttons
     flipButton = [[UIBarButtonItem alloc]
                                    initWithTitle:@"Search"
                                    style:UIBarButtonItemStyleBordered
@@ -90,11 +93,13 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (void) viewWillAppear:(BOOL)animated{
     menuclicked=0;
     self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,360);
     self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 288-offsety);
     self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
+    //checking whether a user is logged in or not
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"log"])
     {
         loginref=1;
@@ -110,6 +115,7 @@
     self.navigationItem.title=@"NewsFeeds";
 }
 
+//changing collection view cell with respetct to timer
 -(void)cellchange
 {
     if(collectionindex==24)
@@ -120,6 +126,8 @@
     NSIndexPath *indexpath = [NSIndexPath indexPathForRow:++collectionindex inSection:0];
     [self.CollectionView scrollToItemAtIndexPath:indexpath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 }
+
+//table view
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView==self.MenuTable)
     {
@@ -199,6 +207,7 @@
     }
 }
 
+//collectionview
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return 25;
@@ -221,6 +230,7 @@
     [self performSegueWithIdentifier:@"DetailedView" sender:nil];
 }
 
+//menu selector
 - (IBAction)MenuButton{
     if(menuclicked==0)
     {
@@ -249,22 +259,27 @@
     {
         if (didselectcollection==1)
         {
+            //collection is selected
             [readarticle addObject:[AllNewsArray objectAtIndex:(collectionindex)]];
             zoom.feed=[AllNewsArray objectAtIndex:(collectionindex)];
             didselectcollection=0;
         }
         else if (selectedrow==7)
         {
+            //search
             zoom.feed=[SearchedNewsArray objectAtIndex:selectedfeed];
             [readarticle addObject:[SearchedNewsArray objectAtIndex:(selectedfeed)]];
         }else
         {
+            //feedstable
             zoom.feed=[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:selectedfeed];
             [readarticle addObject:[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:selectedfeed]];
         }
     }
     else
-    {   if(readarticle.count !=0)
+    {
+        //user profile
+        if(readarticle.count !=0)
         {
             PFUser *currentUser = [PFUser currentUser];
             if (currentUser) {
@@ -277,6 +292,7 @@
         }
     }
 }
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [UIView animateWithDuration:0.5 animations:^{
@@ -298,6 +314,7 @@
     selectedrow=7;
     [AllNews addObject:SearchedNewsArray];
     [search resignFirstResponder];
+    //resetting navigation bar
     self.navigationItem.titleView=Nil;
     self.navigationItem.rightBarButtonItem=flipButton;
     self.navigationItem.leftBarButtonItem=menubutton;
@@ -309,6 +326,7 @@
     if([search.text isEqualToString:@""])
         
     {
+        //resetting navigation bar
         [search resignFirstResponder];
         self.navigationItem.titleView=Nil;
         self.navigationItem.rightBarButtonItem=flipButton;
@@ -320,6 +338,7 @@
 
 -(IBAction)clicksearchbutton
 {
+    //setting navigation bar when search button is clicked
     search= [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 400.0, 44.0)];
     search.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 400.0, 44.0)];
