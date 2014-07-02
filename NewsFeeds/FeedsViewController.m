@@ -186,6 +186,7 @@
 {
     if(tableView==self.MenuTable)
     {
+        menuclicked=0;
         [UIView animateWithDuration:0.5 animations:^{
             self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
             self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
@@ -301,9 +302,12 @@
         self.FeedsTable.frame=CGRectMake(0,60-offsety, 320, 500);
         self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 0);
     }completion:nil];
+    NSString *searchedlower=[search.text lowercaseString];
     SearchedNewsArray=[[NSMutableArray alloc] init];
     for (int j=0;j<[[AllNews objectAtIndex:(selectedrow-1)] count]; j++) {
-        if (([[[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j] valueForKey:@"content:encoded"] rangeOfString:search.text].location == NSNotFound) && ([[[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j] valueForKey:@"title"] rangeOfString:search.text].location == NSNotFound))
+        NSString *contentlower =[[[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j] valueForKey:@"content:encoded"] lowercaseString];
+        NSString *titlelower=[[[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j] valueForKey:@"title"] lowercaseString];
+        if (([contentlower rangeOfString:searchedlower].location == NSNotFound) && ([titlelower rangeOfString:searchedlower].location == NSNotFound))
         {
         } else {
             [SearchedNewsArray addObject:[[AllNews objectAtIndex:(selectedrow-1)]objectAtIndex:j]];
