@@ -687,17 +687,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/NewsFeeds/SDWebImage",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/FacebookSDK",
-					copy,
-					"$(PROJECT_DIR)/FacebookSDK",
-					copy/FBAudienceNetwork,
-					"$(PROJECT_DIR)/FBAudienceNetwork",
-					/Users/QBAdmin/Downloads/FacebookSDK,
-					copy/FBAudienceNetwork,
-					/Users/QBAdmin/Downloads/FacebookSDK,
-					copy,
-					/Users/QBAdmin/Downloads/FacebookSDK,
-					copy/FBAudienceNetwork,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NewsFeeds/NewsFeeds-Prefix.pch";
@@ -720,17 +709,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/NewsFeeds/SDWebImage",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/FacebookSDK",
-					copy,
-					"$(PROJECT_DIR)/FacebookSDK",
-					copy/FBAudienceNetwork,
-					"$(PROJECT_DIR)/FBAudienceNetwork",
-					/Users/QBAdmin/Downloads/FacebookSDK,
-					copy/FBAudienceNetwork,
-					/Users/QBAdmin/Downloads/FacebookSDK,
-					copy,
-					/Users/QBAdmin/Downloads/FacebookSDK,
-					copy/FBAudienceNetwork,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NewsFeeds/NewsFeeds-Prefix.pch";

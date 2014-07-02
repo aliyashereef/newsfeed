@@ -2,8 +2,8 @@
 //  SignInView.m
 //  NewsFeeds
 //
-//  Created by qbadmin on 19/06/14.
-//  Copyright (c) 2014 qbadmin. All rights reserved.
+//  Created by Vineeth on 19/06/14.
+//  Copyright (c) 2014 Vineeth. All rights reserved.
 //
 
 #import "SignInView.h"
@@ -17,7 +17,8 @@
 {
     GPPSignIn *signIn;
     NSMutableArray *historyarray;
-    int historyindex,offsety;
+    int offsety;
+    NSInteger historyindex;
 }
 
 @end
@@ -173,8 +174,8 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         [history  findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded.
-            for(int i=objects.count;i>0;i--){
-                for (int j=[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count];j>0;j--){
+            for(NSInteger i=objects.count;i>0;i--){
+                for (NSInteger j=[[[objects objectAtIndex:(i-1)]valueForKey:@"Feeds"] count];j>0;j--){
                     [historyarray addObject:[[[objects objectAtIndex:(i-1)] valueForKey:@"Feeds"] objectAtIndex:(j-1)]];
                 }
             }

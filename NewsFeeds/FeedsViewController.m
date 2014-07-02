@@ -2,8 +2,8 @@
 //  FeedsViewController.m
 //  NewsFeeds
 //
-//  Created by qbadmin on 17/06/14.
-//  Copyright (c) 2014 qbadmin. All rights reserved.
+//  Created by Vineeth on 17/06/14.
+//  Copyright (c) 2014 Vineeth. All rights reserved.
 //
 
 #import "FeedsViewController.h"
@@ -20,7 +20,8 @@
     NSArray *menulist,*menulist1;
     NSURL *Politicsurl,*MoviewReiviewurl,*Sportsurl,*Hollywoodurl,*NationalInteresturl;
     NSMutableArray *AllNewsArray,*AllNews,*SearchedNewsArray,*readarticle;
-    int selectedrow,loginref,selectedfeed,didscroll,collectionindex,didselectcollection,newssearched,menuclicked,offsetx,offsety;
+    int loginref,didscroll,didselectcollection,newssearched,menuclicked,offsety;
+    NSInteger selectedrow,selectedfeed,collectionindex;
     NSTimer *timer;
     FeedParse *feed;
     UIBarButtonItem *flipButton,*menubutton;
@@ -96,7 +97,7 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     menuclicked=0;
-    self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,360);
+    self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
     self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 288-offsety);
     self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
     //checking whether a user is logged in or not
@@ -186,7 +187,7 @@
     if(tableView==self.MenuTable)
     {
         [UIView animateWithDuration:0.5 animations:^{
-            self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,600);
+            self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
             self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
             self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
         }completion:nil];
@@ -235,7 +236,7 @@
     if(menuclicked==0)
     {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame =  CGRectMake(0,75-offsety, 150, 360);
+        self.MenuTable.frame =  CGRectMake(0,75-offsety, 150, 302);
         self.FeedsTable.frame= CGRectMake(153, 280-offsety, 320, 516);
         self.CollectionView.frame=CGRectMake(153,0-offsety, 320, 280);
         }completion:nil];
@@ -243,7 +244,7 @@
     }else
     {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,600);
+        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
         self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
         self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
     }completion:nil];
@@ -296,7 +297,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,600);
+        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
         self.FeedsTable.frame=CGRectMake(0,60-offsety, 320, 500);
         self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 0);
     }completion:nil];
