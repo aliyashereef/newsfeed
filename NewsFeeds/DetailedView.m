@@ -37,6 +37,7 @@
         //iOS 6 work
     }
     else{
+        self.DetailViewScroll.frame=CGRectMake(0,0, 320, 560);
         //iOS 7 related work
     }
     [super viewDidLoad];

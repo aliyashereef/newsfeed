@@ -26,9 +26,10 @@
     NSInteger selectedrow,selectedfeed,collectionindex;
     NSTimer *timer;
     FeedParse *feed;
-    UIBarButtonItem *flipButton,*menubutton;
+    UIButton *flipButton,*menubutton;
     UISearchBar *search;
     UIView *searchBarView;
+    UIBarButtonItem *rightbutton,*leftbutton;
 }
 
 @end
@@ -77,18 +78,20 @@
     }
     [AllNews addObject:AllNewsArray];
     //adding navigationbarbuttons
-    flipButton = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"Search"
-                                   style:UIBarButtonItemStyleBordered
-                                   target:self
-                                   action:@selector(clicksearchbutton)];
-    menubutton=[[UIBarButtonItem alloc]
-                                    initWithImage:[UIImage imageNamed:@"rsz_1menu.jpg"]
-                                    style:UIBarButtonItemStyleBordered
-                                    target:self
-                                    action:@selector(MenuButton)];
-    self.navigationItem.rightBarButtonItem = flipButton;
-    self.navigationItem.leftBarButtonItem=menubutton;
+    UIImage *searchImage = [UIImage imageNamed:@"rsz_1menu.jpg"];
+    menubutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [menubutton setImage:searchImage forState:UIControlStateNormal];
+    menubutton.frame = CGRectMake(0.0,0.0,searchImage.size.width,searchImage.size.height);
+    [menubutton addTarget:self action:@selector(MenuButton) forControlEvents:UIControlEventTouchUpInside];
+    leftbutton = [[UIBarButtonItem alloc] initWithCustomView:menubutton];
+    UIImage *buttonImage = [UIImage imageNamed:@"rsz_search.png"];
+    flipButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [flipButton setImage:buttonImage forState:UIControlStateNormal];
+    flipButton.frame = CGRectMake(0.0,0.0,buttonImage.size.width,buttonImage.size.height);
+    [flipButton addTarget:self action:@selector(clicksearchbutton) forControlEvents:UIControlEventTouchUpInside];
+    rightbutton = [[UIBarButtonItem alloc] initWithCustomView:flipButton];
+    self.navigationItem.leftBarButtonItem = leftbutton;
+    self.navigationItem.rightBarButtonItem = rightbutton;
 }
 
 - (void)didReceiveMemoryWarning
@@ -328,8 +331,8 @@
     [search resignFirstResponder];
     //resetting navigation bar
     self.navigationItem.titleView=Nil;
-    self.navigationItem.rightBarButtonItem=flipButton;
-    self.navigationItem.leftBarButtonItem=menubutton;
+    self.navigationItem.rightBarButtonItem=rightbutton;
+    self.navigationItem.leftBarButtonItem=leftbutton;
     self.navigationItem.title=@"NewsFeeds";
     [self.FeedsTable reloadData];
 }
@@ -342,8 +345,8 @@
         //resetting navigation bar
         [search resignFirstResponder];
         self.navigationItem.titleView=Nil;
-        self.navigationItem.rightBarButtonItem=flipButton;
-        self.navigationItem.leftBarButtonItem=menubutton;
+        self.navigationItem.rightBarButtonItem=rightbutton;
+        self.navigationItem.leftBarButtonItem=leftbutton;
         self.navigationItem.title=@"NewsFeeds";
         [self.FeedsTable reloadData];
     }

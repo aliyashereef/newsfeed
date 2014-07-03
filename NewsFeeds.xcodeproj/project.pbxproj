@@ -57,6 +57,7 @@
 		22D91654195BD58E00FD8A45 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D91653195BD58E00FD8A45 /* FacebookSDK.framework */; };
 		22D91656195BD59D00FD8A45 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D91655195BD59D00FD8A45 /* FBAudienceNetwork.framework */; };
 		22E1E1C219655D9E00F806F3 /* rsz_1menu.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 22E1E1C119655D9E00F806F3 /* rsz_1menu.jpg */; };
+		22E1E1C41965717000F806F3 /* rsz_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 22E1E1C31965717000F806F3 /* rsz_search.png */; };
 		22E401DA1957ECD4009E5C4C /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E401D91957ECD4009E5C4C /* Parse.framework */; };
 		22E401DC1957ED4A009E5C4C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E401DB1957ED4A009E5C4C /* AudioToolbox.framework */; };
 		22E401DE1957ED66009E5C4C /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E401DD1957ED66009E5C4C /* CFNetwork.framework */; };
@@ -159,6 +160,7 @@
 		22D91655195BD59D00FD8A45 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		22E1E1BC196548B600F806F3 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		22E1E1C119655D9E00F806F3 /* rsz_1menu.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rsz_1menu.jpg; sourceTree = "<group>"; };
+		22E1E1C31965717000F806F3 /* rsz_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rsz_search.png; sourceTree = "<group>"; };
 		22E401D91957ECD4009E5C4C /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		22E401DB1957ED4A009E5C4C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		22E401DD1957ED66009E5C4C /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -230,6 +232,7 @@
 				228001D4196136220057EEDF /* defaultnews.png */,
 				228001D2196128090057EEDF /* default.png */,
 				22E1E1C119655D9E00F806F3 /* rsz_1menu.jpg */,
+				22E1E1C31965717000F806F3 /* rsz_search.png */,
 				22CF78201951992D00CABCB4 /* SDWebImage */,
 				22CDDBAB1950871F007F0316 /* NewsFeeds */,
 				22CDDBCD1950871F007F0316 /* NewsFeedsTests */,
@@ -499,6 +502,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22E1E1C41965717000F806F3 /* rsz_search.png in Resources */,
 				22E1E1C219655D9E00F806F3 /* rsz_1menu.jpg in Resources */,
 				228001D5196136220057EEDF /* defaultnews.png in Resources */,
 				22CDDBBC1950871F007F0316 /* Main_iPad.storyboard in Resources */,
