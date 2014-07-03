@@ -13,6 +13,12 @@
 #import "HistoryTableViewCell.h"
 #import "UIImageView+WebCache.h"
 #import "DetailedView.h"
+#import "Constants.h"
+static NSString * const kPlaceholderUserName = @"<Name>";
+static NSString * const kPlaceholderEmailAddress = @"<Email>";
+static NSString * const kPlaceholderAvatarImageName = @"PlaceholderAvatar.png";
+static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9a8r.apps.googleusercontent.com";
+
 @interface SignInView ()
 {
     GPPSignIn *signIn;
@@ -22,12 +28,9 @@
 }
 
 @end
-static NSString * const kPlaceholderUserName = @"<Name>";
-static NSString * const kPlaceholderEmailAddress = @"<Email>";
-static NSString * const kPlaceholderAvatarImageName = @"PlaceholderAvatar.png";
-static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9a8r.apps.googleusercontent.com";
 
 @implementation SignInView
+
 @synthesize signInButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,6 +41,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     }
     return self;
 }
+
 #pragma mark -GPPSignIn
 - (void)viewDidLoad
 {
@@ -67,6 +71,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     signIn.scopes = @[ kGTLAuthScopePlusLogin ];
     [signIn trySilentAuthentication];
 }
+
 - (void) viewWillAppear:(BOOL)animated
 {
     self.signOutButton.hidden=YES;
@@ -123,10 +128,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         }
     });
 }
-- (void)presentSignInViewController:(UIViewController *)viewController {
-    // This is an example of how you can implement it if your app is navigation-based.
-    [[self navigationController] pushViewController:viewController animated:YES];
-}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -146,7 +148,6 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     }
 }
 
-
 - (void)finishedWithAuth: (GTMOAuth2Authentication *)auth
                    error: (NSError *) error {
     NSLog(@"Received error %@ and auth object %@",error, auth);
@@ -154,7 +155,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         // Do some error handling here.
     } else {
         NSLog(@"Received auth %@", auth);
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"log"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:signinkey];
         [[NSUserDefaults standardUserDefaults] synchronize];
         self.signOutButton.hidden=NO;
         self.signOutButton.highlighted=YES;
@@ -189,33 +190,18 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     }
 }
 
-- (void)signOut {
+- (IBAction)SignOutButton:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:signinkey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [[GPPSignIn sharedInstance] signOut];
     [PFUser logOut];
     [historyarray removeAllObjects];
     [self.HistoryTable reloadData];
-}
-- (void)disconnect {
-    [[GPPSignIn sharedInstance] disconnect];
-}
-
-- (void)didDisconnectWithError:(NSError *)error {
-    if (error) {
-        NSLog(@"Received error %@", error);
-    } else {
-        // The user is signed out and disconnected.
-        // Clean up user data as specified by the Google+ terms.
-    }
-}
-
-- (IBAction)SignOutButton:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"log"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self signOut];
     [self refreshInterfaceBasedOnSignIn];
     [self reportAuthStatus];
     self.signOutButton.hidden=YES;
 }
+
 - (void)updateButtons {
     BOOL authenticated = ([GPPSignIn sharedInstance].authentication != nil);
     self.signInButton.enabled = !authenticated;
@@ -228,17 +214,17 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         self.signOutButton.alpha = 0.5;
     }
 }
+
 #pragma mark -HistoryTable
 //tableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(historyarray.count<10)
+    if(historyarray.count<maxnoofhistory)
     {
         return historyarray.count;
     }else
     {
-        return 10;
+        return maxnoofhistory;
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -258,17 +244,21 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     [cell.HistoryDiscription sizeToFit];
     return cell;
 }
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     historyindex=indexPath.row;
-    [self performSegueWithIdentifier:@"ProfilePush" sender:self];
+    [self performSegueWithIdentifier:signinviewtodetailedview sender:self];
 }
+
+#pragma mark -Segue
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     DetailedView *zoom = [segue destinationViewController];
-    if([segue.identifier isEqualToString:@"ProfilePush"])
+    if([segue.identifier isEqualToString:signinviewtodetailedview])
     {
         zoom.feed=[historyarray objectAtIndex:historyindex];
     }
 }
+
 @end

@@ -15,6 +15,8 @@
 #import "DetailedView.h"
 #import "SignInView.h"
 #import "Parse/Parse.h"
+#import "Constants.h"
+
 @interface FeedsViewController ()
 {
     NSArray *menulist,*menulist1;
@@ -81,10 +83,10 @@
                                    target:self
                                    action:@selector(clicksearchbutton)];
     menubutton=[[UIBarButtonItem alloc]
-                initWithTitle:@"Menu"
-                style:UIBarButtonItemStyleBordered
-                target:self
-                action:@selector(MenuButton)];
+                                    initWithImage:[UIImage imageNamed:@"rsz_1menu.jpg"]
+                                    style:UIBarButtonItemStyleBordered
+                                    target:self
+                                    action:@selector(MenuButton)];
     self.navigationItem.rightBarButtonItem = flipButton;
     self.navigationItem.leftBarButtonItem=menubutton;
 }
@@ -101,7 +103,7 @@
     self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 288-offsety);
     self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
     //checking whether a user is logged in or not
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"log"])
+    if([[NSUserDefaults standardUserDefaults] boolForKey:signinkey])
     {
         loginref=1;
         [self.MenuTable reloadData];
@@ -127,6 +129,7 @@
     NSIndexPath *indexpath = [NSIndexPath indexPathForRow:++collectionindex inSection:0];
     [self.CollectionView scrollToItemAtIndexPath:indexpath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 }
+
 #pragma mark -TableView
 //table view
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -139,12 +142,11 @@
     }
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(tableView==self.MenuTable)
     {
-        static NSString *cellIdentifier = @"MainMenu";
+        static NSString *cellIdentifier = menutablecellid;
         MenuTableCell *cell = (MenuTableCell*)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if(cell == nil)
         {
@@ -165,7 +167,7 @@
     }
     if (tableView==self.FeedsTable)
     {   NSRange range;
-        FeedsTableCell *cell = (FeedsTableCell*)[tableView dequeueReusableCellWithIdentifier:@"FeedMenu" forIndexPath:indexPath];
+        FeedsTableCell *cell = (FeedsTableCell*)[tableView dequeueReusableCellWithIdentifier:feedstablecellid forIndexPath:indexPath];
         [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
         cell.FeedTitle.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey: @"title"];
         cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"description"];
@@ -196,7 +198,7 @@
         {
             [timer invalidate];
             timer=nil;
-            [self performSegueWithIdentifier:@"SignInView" sender:self];
+            [self performSegueWithIdentifier:tosigninviewcontroller sender:self];
         }else{
         selectedrow=indexPath.row;
         [self.FeedsTable reloadData];
@@ -205,9 +207,10 @@
     if(tableView==self.FeedsTable)
     {
         selectedfeed=indexPath.row;
-        [self performSegueWithIdentifier:@"DetailedView" sender:self];
+        [self performSegueWithIdentifier:todetailedviewcontroller sender:self];
     }
 }
+
 #pragma mark -CollectionView
 //collectionview
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -216,8 +219,7 @@
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"CollectionID";
-    CollectionCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier
+    CollectionCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:collectioncellIdentifier
                                                                            forIndexPath:indexPath];
     if (cell==nil)
     {
@@ -227,10 +229,12 @@
     [cell.CollectionImage setImageWithURL:[NSURL URLWithString:[[AllNewsArray objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
     return cell;
 }
+
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath  {
     didselectcollection=1;
-    [self performSegueWithIdentifier:@"DetailedView" sender:nil];
+    [self performSegueWithIdentifier:todetailedviewcontroller sender:nil];
 }
+
 #pragma mark -IB Action
 //menu selector
 - (IBAction)MenuButton{
@@ -252,6 +256,7 @@
     menuclicked=0;
     }
 }
+
 #pragma mark -Seague
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -294,6 +299,7 @@
         }
     }
 }
+
 #pragma mark -SearchButton
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -327,6 +333,7 @@
     self.navigationItem.title=@"NewsFeeds";
     [self.FeedsTable reloadData];
 }
+
  -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if([search.text isEqualToString:@""])
