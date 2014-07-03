@@ -127,7 +127,7 @@
     NSIndexPath *indexpath = [NSIndexPath indexPathForRow:++collectionindex inSection:0];
     [self.CollectionView scrollToItemAtIndexPath:indexpath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 }
-
+#pragma mark -TableView
 //table view
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView==self.MenuTable)
@@ -159,7 +159,6 @@
         {
             menu=[menulist objectAtIndex:indexPath.row];
         }
-        
         cell.MainLabel.text=menu;
         [cell.MainLabel sizeToFit];
         return cell;
@@ -182,6 +181,7 @@
     }
     return NULL;
 }
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(tableView==self.MenuTable)
@@ -208,7 +208,7 @@
         [self performSegueWithIdentifier:@"DetailedView" sender:self];
     }
 }
-
+#pragma mark -CollectionView
 //collectionview
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -231,7 +231,7 @@
     didselectcollection=1;
     [self performSegueWithIdentifier:@"DetailedView" sender:nil];
 }
-
+#pragma mark -IB Action
 //menu selector
 - (IBAction)MenuButton{
     if(menuclicked==0)
@@ -249,10 +249,10 @@
         self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
         self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
     }completion:nil];
-        menuclicked=0;
+    menuclicked=0;
     }
 }
-
+#pragma mark -Seague
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [timer invalidate];
@@ -294,6 +294,7 @@
         }
     }
 }
+#pragma mark -SearchButton
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {

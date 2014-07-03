@@ -71,7 +71,7 @@
     self.DetailedViewDate.text=dateString;
 }
 
-
+#pragma mark -FBshare
 - (IBAction)ShareButton:(id)sender {
     // Check if the Facebook app is installed and we can present the share dialog
     FBLinkShareParams *params = [[FBLinkShareParams alloc] init];

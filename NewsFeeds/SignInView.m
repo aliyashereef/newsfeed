@@ -38,6 +38,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     }
     return self;
 }
+#pragma mark -GPPSignIn
 - (void)viewDidLoad
 {
     NSString *version = [[UIDevice currentDevice] systemVersion];
@@ -74,8 +75,8 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     signIn.shouldFetchGooglePlusUser = YES;
     signIn.shouldFetchGoogleUserEmail = YES;
     [self reportAuthStatus];
-    
 }
+
 - (void)reportAuthStatus {
     if ([GPPSignIn sharedInstance].authentication) {
     } else {
@@ -227,7 +228,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         self.signOutButton.alpha = 0.5;
     }
 }
-
+#pragma mark -HistoryTable
 //tableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(historyarray.count<10)
