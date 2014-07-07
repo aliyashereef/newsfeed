@@ -16,20 +16,23 @@
 #import "SignInView.h"
 #import "Parse/Parse.h"
 #import "Constants.h"
+#import "MBProgressHUD (1).h"
 
 @interface FeedsViewController ()
 {
     NSArray *menulist,*menulist1;
-    NSURL *Politicsurl,*MoviewReiviewurl,*Sportsurl,*Hollywoodurl,*NationalInteresturl;
-    NSMutableArray *AllNewsArray,*AllNews,*SearchedNewsArray,*readarticle;
+    NSMutableArray *AllNewsArray,*AllNews,*SearchedNewsArray,*readarticle,*urlarray,*unsortednewsarray;
     int loginref,didscroll,didselectcollection,newssearched,menuclicked,offsety;
     NSInteger selectedrow,selectedfeed,collectionindex;
     NSTimer *timer;
-    FeedParse *feed;
+    FeedParse *feedmovie,*feedpolitics,*feedholliwood,*feednational,*feedsports;
     UIButton *flipButton,*menubutton;
     UISearchBar *search;
     UIView *searchBarView;
     UIBarButtonItem *rightbutton,*leftbutton;
+    int allnewsindex,AllNewsArrayindex;
+    MBProgressHUD *Loading;
+
 }
 
 @end
@@ -39,44 +42,49 @@
 
 - (void)viewDidLoad
 {
+    Loading = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    Loading.mode = MBProgressHUDModeIndeterminate;
+    Loading.labelText = @"Loading";
+    [Loading show:YES];
+    AllNewsArrayindex=0;
+    allnewsindex=0;
     NSString *version = [[UIDevice currentDevice] systemVersion];
     int ver = [version intValue];
     if (ver < 7){
         offsety=64;
         //iOS 6 work
     }
-    else{
-        //iOS 7 related work
-    }
-    int allnewsindex,AllNewsArrayindex;
     [super viewDidLoad];
     selectedrow=6;
-    feed=[[FeedParse alloc] init];
     readarticle=[[NSMutableArray alloc] init];
+    unsortednewsarray=[[NSMutableArray alloc] init];
     //setting all the url
     menulist=[NSArray arrayWithObjects:@"SignIn",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",@"AllNews",nil];
     menulist1= [NSArray arrayWithObjects:@"My Profile",@"Politics",@"Movie-Review",@"Hollywood",@"National-Interest",@"Sports",@"AllNews",nil];
-    MoviewReiviewurl =[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/movie-review/feed/"];
-    Politicsurl=[NSURL URLWithString:@"http://indianexpress.com/section/india/politics/feed/"];
-    Sportsurl=[NSURL URLWithString:@"http://indianexpress.com/section/sports/feed/"];
-    NationalInteresturl=[NSURL URLWithString:@"http://indianexpress.com/print/national-interest/feed/"];
-    Hollywoodurl=[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/hollywood/feed/"];
+    urlarray=[[NSMutableArray alloc] init];
+    [urlarray addObject:[NSURL URLWithString:@"http://indianexpress.com/section/india/politics/feed/"]];
+    [urlarray addObject:[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/movie-review/feed/"]];
+    [urlarray addObject:[NSURL URLWithString:@"http://indianexpress.com/section/entertainment/hollywood/feed/"]];
+    [urlarray addObject:[NSURL URLWithString:@"http://indianexpress.com/print/national-interest/feed/"]];
+    [urlarray addObject:[NSURL URLWithString:@"http://indianexpress.com/section/sports/feed/"]];
     //parsing
+    feedpolitics=[[FeedParse alloc] init];
+    feedmovie=[[FeedParse alloc] init];
+    feedholliwood=[[FeedParse alloc] init];
+    feednational=[[FeedParse alloc] init];
+    feedsports=[[FeedParse alloc] init];
     AllNewsArray=[[NSMutableArray alloc] init];
     AllNews=[[NSMutableArray alloc] init];
-    [AllNews addObject:[feed startparse:Politicsurl]];
-    [AllNews addObject:[feed startparse:MoviewReiviewurl]]; 
-    [AllNews addObject:[feed startparse:Hollywoodurl]];
-    [AllNews addObject:[feed startparse:NationalInteresturl]];
-    [AllNews addObject:[feed startparse:Sportsurl]];
-    for(allnewsindex=0;allnewsindex<5;allnewsindex++)
-    {
-        for(AllNewsArrayindex=0;AllNewsArrayindex<5;AllNewsArrayindex++)
-        {
-            [AllNewsArray addObject:[[AllNews objectAtIndex:allnewsindex] objectAtIndex:AllNewsArrayindex]];
-        }
-    }
-    [AllNews addObject:AllNewsArray];
+    [feedpolitics startparse:[urlarray objectAtIndex:0]];
+    [feedmovie startparse:[urlarray objectAtIndex:1]];
+    [feedholliwood startparse:[urlarray objectAtIndex:2]];
+    [feednational startparse:[urlarray objectAtIndex:3]];
+    [feedsports startparse:[urlarray objectAtIndex:4]];
+    [feedpolitics setMydelegate:self];
+    [feedmovie setMydelegate:self];
+    [feedholliwood setMydelegate:self];
+    [feednational setMydelegate:self];
+    [feedsports setMydelegate:self];
     //adding navigationbarbuttons
     UIImage *searchImage = [UIImage imageNamed:@"rsz_1menu.jpg"];
     menubutton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -120,7 +128,6 @@
                                            repeats:(BOOL)YES];
     self.navigationItem.title=@"NewsFeeds";
 }
-
 //changing collection view cell with respetct to timer
 -(void)cellchange
 {
@@ -128,9 +135,12 @@
     {
         collectionindex=0;
     }
-
+    if(AllNews.count==0)
+    {
+    }else {
     NSIndexPath *indexpath = [NSIndexPath indexPathForRow:++collectionindex inSection:0];
     [self.CollectionView scrollToItemAtIndexPath:indexpath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    }
 }
 
 #pragma mark -TableView
@@ -141,7 +151,11 @@
         return 7;
     }else
     {
+        if (AllNews.count==0) {
+            return 0;
+        }else{
         return [[AllNews objectAtIndex:(selectedrow-1)] count];
+        }
     }
 }
 
@@ -173,14 +187,14 @@
         FeedsTableCell *cell = (FeedsTableCell*)[tableView dequeueReusableCellWithIdentifier:feedstablecellid forIndexPath:indexPath];
         [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
         cell.FeedTitle.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey: @"title"];
-        cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"description"];
+        [cell.FeedTitle sizeToFit];
+        cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"pubDate"];
         [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
-        [cell.FeedTitle setLineBreakMode:NSLineBreakByWordWrapping];
-        cell.FeedTitle.numberOfLines = 2; //will wrap text in new line
+        cell.FeedTitle.numberOfLines =3; //will wrap text in new line
         while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
         cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
         [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
-        cell.FeedDiscription.numberOfLines=3;
+        cell.FeedDiscription.numberOfLines=1    ;
         [cell.FeedDiscription sizeToFit];
         return cell;
     }
@@ -191,20 +205,22 @@
 {
     if(tableView==self.MenuTable)
     {
-        menuclicked=0;
-        [UIView animateWithDuration:0.5 animations:^{
-            self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
-            self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
-            self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
-        }completion:nil];
-        if(indexPath.row==0)
-        {
-            [timer invalidate];
-            timer=nil;
-            [self performSegueWithIdentifier:tosigninviewcontroller sender:self];
-        }else{
-        selectedrow=indexPath.row;
-        [self.FeedsTable reloadData];
+        if(!(AllNews.count<indexPath.row)){
+            menuclicked=0;
+            [UIView animateWithDuration:0.5 animations:^{
+                self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
+                self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
+                self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
+            }completion:nil];
+            if(indexPath.row==0)
+            {
+                [timer invalidate];
+                timer=nil;
+                [self performSegueWithIdentifier:tosigninviewcontroller sender:self];
+            }else{
+                selectedrow=indexPath.row;
+                [self.FeedsTable reloadData];
+            }
         }
     }
     if(tableView==self.FeedsTable)
@@ -218,7 +234,7 @@
 //collectionview
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 25;
+    return AllNewsArray.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -303,7 +319,7 @@
     }
 }
 
-#pragma mark -SearchButton
+#pragma mark -Search
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
@@ -362,9 +378,67 @@
     self.navigationItem.rightBarButtonItem=Nil;
     self.navigationItem.leftBarButtonItem=Nil;
     search.delegate = self;
-   [searchBarView addSubview:search];
+    [searchBarView addSubview:search];
     self.navigationItem.titleView = searchBarView;
     [search becomeFirstResponder];
-
 }
+
+#pragma mark -PulltoRefresh
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self containingScrollViewDidEndDragging:scrollView];
+}
+
+- (void)containingScrollViewDidEndDragging:(UIScrollView *)containingScrollView
+{
+    if(containingScrollView==self.FeedsTable)
+    {
+        CGFloat minOffsetToTriggerRefresh = 70.0f;
+        if (containingScrollView.contentOffset.y <= -minOffsetToTriggerRefresh) {
+            [self refresh];
+        }
+    }
+}
+
+-(void)refresh
+{
+    allnewsindex=0;
+    [Loading show:YES];
+    AllNewsArrayindex=0;
+    [AllNews removeAllObjects];
+    [unsortednewsarray removeAllObjects];
+    [AllNewsArray removeAllObjects];
+    [feedpolitics startparse:[urlarray objectAtIndex:0]];
+    [feedmovie startparse:[urlarray objectAtIndex:1]];
+    [feedholliwood startparse:[urlarray objectAtIndex:2]];
+    [feednational startparse:[urlarray objectAtIndex:3]];
+    [feedsports startparse:[urlarray objectAtIndex:4]];
+    [self.FeedsTable reloadData];
+}
+#pragma mark -FeedparserDelegate
+-(void)passfeeds:(NSDictionary *)passeddict
+{
+    [unsortednewsarray addObject:passeddict];
+    for (int i=0; i<5; i++) {
+        [AllNewsArray insertObject:[[[unsortednewsarray objectAtIndex:allnewsindex ] valueForKey:@"feeds"] objectAtIndex:i] atIndex:AllNewsArrayindex];
+        AllNewsArrayindex++;
+    }
+    allnewsindex++;
+    if(allnewsindex==5)
+    {
+        for (int i=0; i<5;i++) {
+            for (int j=0; j<5; j++) {
+                if ([[unsortednewsarray objectAtIndex:j] valueForKey:@"url"]==[urlarray objectAtIndex:i]) {
+                    [AllNews addObject:[[unsortednewsarray objectAtIndex:j] valueForKey:@"feeds"]];
+                }
+            }
+    }
+    [AllNews addObject:AllNewsArray];
+    [self.FeedsTable reloadData];
+    [Loading hide:YES];
+    }
+    [self.CollectionView reloadData];
+}
+
 @end
+

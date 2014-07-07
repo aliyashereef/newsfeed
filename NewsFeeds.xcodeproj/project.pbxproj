@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220208F81966704800CECF00 /* MBProgressHUD (1).m in Sources */ = {isa = PBXBuildFile; fileRef = 220208F71966704800CECF00 /* MBProgressHUD (1).m */; };
 		228001D3196128090057EEDF /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 228001D2196128090057EEDF /* default.png */; };
 		228001D5196136220057EEDF /* defaultnews.png in Resources */ = {isa = PBXBuildFile; fileRef = 228001D4196136220057EEDF /* defaultnews.png */; };
 		22BAA7C519530AB40006BBD6 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BAA7C419530AB40006BBD6 /* AddressBook.framework */; };
@@ -84,6 +85,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		220208F71966704800CECF00 /* MBProgressHUD (1).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MBProgressHUD (1).m"; path = "../MBProgressHUD (1).m"; sourceTree = "<group>"; };
+		220208F91966705100CECF00 /* MBProgressHUD (1).h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MBProgressHUD (1).h"; path = "../MBProgressHUD (1).h"; sourceTree = "<group>"; };
 		228001D2196128090057EEDF /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 		228001D4196136220057EEDF /* defaultnews.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultnews.png; sourceTree = "<group>"; };
 		22BAA7C419530AB40006BBD6 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -287,6 +290,8 @@
 		22CDDBAB1950871F007F0316 /* NewsFeeds */ = {
 			isa = PBXGroup;
 			children = (
+				220208F91966705100CECF00 /* MBProgressHUD (1).h */,
+				220208F71966704800CECF00 /* MBProgressHUD (1).m */,
 				22CDDBB41950871F007F0316 /* FeedsAppDelegate.h */,
 				22CDDBB51950871F007F0316 /* FeedsAppDelegate.m */,
 				22CDDBB71950871F007F0316 /* Main_iPhone.storyboard */,
@@ -550,6 +555,7 @@
 				22CF781E1951566D00CABCB4 /* FeedParse.m in Sources */,
 				22E68AFE195151FE008931AE /* CollectionCell.m in Sources */,
 				22CDDBBF1950871F007F0316 /* FeedsViewController.m in Sources */,
+				220208F81966704800CECF00 /* MBProgressHUD (1).m in Sources */,
 				22CF78471951992D00CABCB4 /* SDWebImageManager.m in Sources */,
 				22CF78511951C34600CABCB4 /* DetailedView.m in Sources */,
 				22E68AF8195151B1008931AE /* MenuTableCell.m in Sources */,

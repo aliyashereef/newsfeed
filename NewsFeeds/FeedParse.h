@@ -7,14 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-
+@protocol FeedParseDelegate;
 @interface FeedParse : NSObject<NSXMLParserDelegate>
 {
-    NSMutableArray *feeds;
+//    id <FeedParseDelegate> mydelegate;
     NSMutableDictionary *item;
     NSMutableString *title,*content,*disc,*date,*thumbnailUrl;
     NSString *element;
     NSXMLParser *parser;
+    FeedParse *feedobject;
 }
--(NSMutableArray *)startparse:(NSURL *)url;
+-(void)startparse:(NSURL *)url;
+@property (strong) id  <FeedParseDelegate> mydelegate;
+@property (nonatomic,retain) NSMutableArray *feeds;
 @end
+
+@protocol FeedParseDelegate
+-(void)passfeeds:(NSDictionary *)passeddict;
+@end
+
+
+
