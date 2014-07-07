@@ -16,7 +16,7 @@
 #import "SignInView.h"
 #import "Parse/Parse.h"
 #import "Constants.h"
-#import "MBProgressHUD (1).h"
+#import "MBProgressHUD.h"
 
 @interface FeedsViewController ()
 {
@@ -32,7 +32,6 @@
     UIBarButtonItem *rightbutton,*leftbutton;
     int allnewsindex,AllNewsArrayindex;
     MBProgressHUD *Loading;
-
 }
 
 @end
@@ -187,14 +186,12 @@
         FeedsTableCell *cell = (FeedsTableCell*)[tableView dequeueReusableCellWithIdentifier:feedstablecellid forIndexPath:indexPath];
         [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
         cell.FeedTitle.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey: @"title"];
-        [cell.FeedTitle sizeToFit];
         cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"pubDate"];
         [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
-        cell.FeedTitle.numberOfLines =3; //will wrap text in new line
         while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
         cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
         [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
-        cell.FeedDiscription.numberOfLines=1    ;
+        cell.FeedDiscription.numberOfLines=1;
         [cell.FeedDiscription sizeToFit];
         return cell;
     }
@@ -415,6 +412,7 @@
     [feedsports startparse:[urlarray objectAtIndex:4]];
     [self.FeedsTable reloadData];
 }
+
 #pragma mark -FeedparserDelegate
 -(void)passfeeds:(NSDictionary *)passeddict
 {

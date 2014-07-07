@@ -16,5 +16,4 @@
     @property (weak, nonatomic) IBOutlet UILabel *DetailedViewDate;
     @property (weak, nonatomic) IBOutlet UILabel *DetailedViewContent;
     @property (weak, nonatomic) IBOutlet UIScrollView *DetailViewScroll;
-    - (IBAction)ShareButton:(id)sender;
 @end

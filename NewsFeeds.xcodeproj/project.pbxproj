@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		220208F81966704800CECF00 /* MBProgressHUD (1).m in Sources */ = {isa = PBXBuildFile; fileRef = 220208F71966704800CECF00 /* MBProgressHUD (1).m */; };
+		220208F81966704800CECF00 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 220208F71966704800CECF00 /* MBProgressHUD.m */; };
 		228001D3196128090057EEDF /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 228001D2196128090057EEDF /* default.png */; };
 		228001D5196136220057EEDF /* defaultnews.png in Resources */ = {isa = PBXBuildFile; fileRef = 228001D4196136220057EEDF /* defaultnews.png */; };
+		22A31777196ACD2C0029620D /* rsz_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 22A31776196ACD2C0029620D /* rsz_share.png */; };
 		22BAA7C519530AB40006BBD6 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BAA7C419530AB40006BBD6 /* AddressBook.framework */; };
 		22BAA7C719530ABD0006BBD6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BAA7C619530ABD0006BBD6 /* AssetsLibrary.framework */; };
 		22BAA7C919530AE30006BBD6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BAA7C819530AE30006BBD6 /* CoreLocation.framework */; };
@@ -85,10 +86,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		220208F71966704800CECF00 /* MBProgressHUD (1).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MBProgressHUD (1).m"; path = "../MBProgressHUD (1).m"; sourceTree = "<group>"; };
-		220208F91966705100CECF00 /* MBProgressHUD (1).h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MBProgressHUD (1).h"; path = "../MBProgressHUD (1).h"; sourceTree = "<group>"; };
+		220208F71966704800CECF00 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
+		220208F91966705100CECF00 /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../MBProgressHUD.h; sourceTree = "<group>"; };
 		228001D2196128090057EEDF /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 		228001D4196136220057EEDF /* defaultnews.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultnews.png; sourceTree = "<group>"; };
+		22A31776196ACD2C0029620D /* rsz_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rsz_share.png; sourceTree = "<group>"; };
 		22BAA7C419530AB40006BBD6 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		22BAA7C619530ABD0006BBD6 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		22BAA7C819530AE30006BBD6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -236,6 +238,7 @@
 				228001D2196128090057EEDF /* default.png */,
 				22E1E1C119655D9E00F806F3 /* rsz_1menu.jpg */,
 				22E1E1C31965717000F806F3 /* rsz_search.png */,
+				22A31776196ACD2C0029620D /* rsz_share.png */,
 				22CF78201951992D00CABCB4 /* SDWebImage */,
 				22CDDBAB1950871F007F0316 /* NewsFeeds */,
 				22CDDBCD1950871F007F0316 /* NewsFeedsTests */,
@@ -290,8 +293,8 @@
 		22CDDBAB1950871F007F0316 /* NewsFeeds */ = {
 			isa = PBXGroup;
 			children = (
-				220208F91966705100CECF00 /* MBProgressHUD (1).h */,
-				220208F71966704800CECF00 /* MBProgressHUD (1).m */,
+				220208F91966705100CECF00 /* MBProgressHUD.h */,
+				220208F71966704800CECF00 /* MBProgressHUD.m */,
 				22CDDBB41950871F007F0316 /* FeedsAppDelegate.h */,
 				22CDDBB51950871F007F0316 /* FeedsAppDelegate.m */,
 				22CDDBB71950871F007F0316 /* Main_iPhone.storyboard */,
@@ -512,6 +515,7 @@
 				228001D5196136220057EEDF /* defaultnews.png in Resources */,
 				22CDDBBC1950871F007F0316 /* Main_iPad.storyboard in Resources */,
 				22C053821953039A001C7BA9 /* GooglePlus.bundle in Resources */,
+				22A31777196ACD2C0029620D /* rsz_share.png in Resources */,
 				22CDDBC11950871F007F0316 /* Images.xcassets in Resources */,
 				22CDDBB91950871F007F0316 /* Main_iPhone.storyboard in Resources */,
 				22CDDBB01950871F007F0316 /* InfoPlist.strings in Resources */,
@@ -555,7 +559,7 @@
 				22CF781E1951566D00CABCB4 /* FeedParse.m in Sources */,
 				22E68AFE195151FE008931AE /* CollectionCell.m in Sources */,
 				22CDDBBF1950871F007F0316 /* FeedsViewController.m in Sources */,
-				220208F81966704800CECF00 /* MBProgressHUD (1).m in Sources */,
+				220208F81966704800CECF00 /* MBProgressHUD.m in Sources */,
 				22CF78471951992D00CABCB4 /* SDWebImageManager.m in Sources */,
 				22CF78511951C34600CABCB4 /* DetailedView.m in Sources */,
 				22E68AF8195151B1008931AE /* MenuTableCell.m in Sources */,
