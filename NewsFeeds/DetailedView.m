@@ -67,7 +67,7 @@
     self.DetailedViewContent.text =[self.feed valueForKey:@"content:encoded"];
     while ((rangeofstring = [self.DetailedViewContent.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
     self.DetailedViewContent.text = [self.DetailedViewContent.text stringByReplacingCharactersInRange:rangeofstring   withString:@""];
-    [self.DetailedViewContent setFont:[UIFont systemFontOfSize:13]];
+    [self.DetailedViewContent setFont:[UIFont systemFontOfSize:14]];
     self.DetailedViewContent.numberOfLines = 0;
     [self.DetailedViewContent sizeToFit];
     self.DetailedViewTitle.text=[self.feed valueForKey:@"title"];
@@ -79,10 +79,12 @@
     //date
     NSString *dateString=[self.feed valueForKey:@"pubDate"];
     self.DetailedViewDate.text=dateString;
+    [self.DetailedViewDate setFont:[UIFont systemFontOfSize:10]];
 }
 
 #pragma mark -FBshare
-- (void)ShareButton{
+- (void)ShareButton
+{
     NSArray *activityItems = @[[self.feed valueForKey:@"title"],[NSURL URLWithString:[self.feed valueForKey:@"image"]]];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:Nil];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToWeibo, UIActivityTypeAssignToContact ];

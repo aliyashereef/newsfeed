@@ -109,9 +109,9 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     menuclicked=0;
-    self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
-    self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 288-offsety);
-    self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
+    self.MenuTable.frame=CGRectMake(0, 65-offsety, 0,302);
+    self.FeedsTable.frame=CGRectMake(0,240-offsety, 320, 320-offsety);
+    self.CollectionView.frame=CGRectMake(0,-20-offsety, 320, 280);
     //checking whether a user is logged in or not
     if([[NSUserDefaults standardUserDefaults] boolForKey:signinkey])
     {
@@ -187,7 +187,8 @@
         [cell.FeedImage setImageWithURL:[NSURL URLWithString:[[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] valueForKey:@"image"] ] placeholderImage:nil];
         cell.FeedTitle.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey: @"title"];
         cell.FeedDiscription.text = [[[AllNews objectAtIndex:(selectedrow-1)] objectAtIndex:indexPath.row] objectForKey:@"pubDate"];
-        [cell.FeedTitle setFont:[UIFont systemFontOfSize:13]];
+//        [cell.FeedTitle setFont:[UIFont systemFontOfSize:15]];
+//        cell.FeedTitle.numberOfLines=2;
         while ((range = [cell.FeedDiscription.text rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
         cell.FeedDiscription.text = [cell.FeedDiscription.text stringByReplacingCharactersInRange:range withString:@""];
         [cell.FeedDiscription setFont:[UIFont systemFontOfSize:10]];
@@ -205,9 +206,9 @@
         if(!(AllNews.count<indexPath.row)){
             menuclicked=0;
             [UIView animateWithDuration:0.5 animations:^{
-                self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
-                self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
-                self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
+                self.MenuTable.frame=CGRectMake(0, 65-offsety, 0,302);
+                self.FeedsTable.frame=CGRectMake(0,240-offsety, 320, 320-offsety);
+                self.CollectionView.frame=CGRectMake(0,-20-offsety, 320, 280);
             }completion:nil];
             if(indexPath.row==0)
             {
@@ -257,17 +258,17 @@
     if(menuclicked==0)
     {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame =  CGRectMake(0,75-offsety, 150, 302);
-        self.FeedsTable.frame= CGRectMake(153, 280-offsety, 320, 516);
-        self.CollectionView.frame=CGRectMake(153,0-offsety, 320, 280);
+        self.MenuTable.frame =  CGRectMake(0,65-offsety, 150, 302);
+        self.FeedsTable.frame= CGRectMake(153, 240-offsety, 320, 320-offsety);
+        self.CollectionView.frame=CGRectMake(153,-20-offsety, 320, 280);
         }completion:nil];
         menuclicked=1;
     }else
     {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
-        self.FeedsTable.frame=CGRectMake(0,280-offsety, 320, 516);
-        self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 280);
+        self.MenuTable.frame=CGRectMake(0, 65-offsety, 0,302);
+        self.FeedsTable.frame=CGRectMake(0,240-offsety, 320, 320-offsety);
+        self.CollectionView.frame=CGRectMake(0,-20-offsety, 320, 280);
     }completion:nil];
     menuclicked=0;
     }
@@ -321,7 +322,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [UIView animateWithDuration:0.5 animations:^{
-        self.MenuTable.frame=CGRectMake(0, 75-offsety, 0,302);
+        self.MenuTable.frame=CGRectMake(0, 65-offsety, 0,302);
         self.FeedsTable.frame=CGRectMake(0,60-offsety, 320, 500);
         self.CollectionView.frame=CGRectMake(0,0-offsety, 320, 0);
     }completion:nil];
@@ -399,18 +400,22 @@
 
 -(void)refresh
 {
+    if(selectedrow<7)
+    {
     allnewsindex=0;
     [Loading show:YES];
     AllNewsArrayindex=0;
     [AllNews removeAllObjects];
     [unsortednewsarray removeAllObjects];
     [AllNewsArray removeAllObjects];
+    [SearchedNewsArray removeAllObjects];
     [feedpolitics startparse:[urlarray objectAtIndex:0]];
     [feedmovie startparse:[urlarray objectAtIndex:1]];
     [feedholliwood startparse:[urlarray objectAtIndex:2]];
     [feednational startparse:[urlarray objectAtIndex:3]];
     [feedsports startparse:[urlarray objectAtIndex:4]];
     [self.FeedsTable reloadData];
+    }
 }
 
 #pragma mark -FeedparserDelegate
