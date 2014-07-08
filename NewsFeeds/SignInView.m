@@ -14,8 +14,8 @@
 #import "UIImageView+WebCache.h"
 #import "DetailedView.h"
 #import "Constants.h"
-static NSString * const kPlaceholderUserName = @"<Name>";
-static NSString * const kPlaceholderEmailAddress = @"<Email>";
+static NSString * const kPlaceholderUserName = @"";
+static NSString * const kPlaceholderEmailAddress = @"";
 static NSString * const kPlaceholderAvatarImageName = @"PlaceholderAvatar.png";
 static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9a8r.apps.googleusercontent.com";
 
@@ -75,6 +75,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
 - (void) viewWillAppear:(BOOL)animated
 {
     self.signOutButton.hidden=YES;
+    self.historylabel.hidden=YES;
     [signIn trySilentAuthentication];
     historyarray=[[NSMutableArray alloc] init];
     signIn.shouldFetchGooglePlusUser = YES;
@@ -159,13 +160,13 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
         [[NSUserDefaults standardUserDefaults] synchronize];
         self.signOutButton.hidden=NO;
         self.signOutButton.highlighted=YES;
+        self.historylabel.hidden=NO;
         [self reportAuthStatus];
         [self refreshInterfaceBasedOnSignIn];
         //registering user into parse
         PFUser *user = [PFUser user];
         user.username =self.EmailId.text;
         user.password =self.UserNAme.text;
-        user[@"Identifier"]=self.EmailId.text;
         [user signUp];
         //fetching user history
         [PFUser logInWithUsernameInBackground:self.EmailId.text password:self.UserNAme.text
@@ -200,6 +201,7 @@ static NSString * const kClientId = @"547022631962-gaibvaqbko16bqqn1vspjd70or1g9
     [self refreshInterfaceBasedOnSignIn];
     [self reportAuthStatus];
     self.signOutButton.hidden=YES;
+    self.historylabel.hidden=YES;
 }
 
 - (void)updateButtons {
