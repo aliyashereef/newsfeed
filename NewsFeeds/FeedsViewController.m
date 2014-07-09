@@ -22,13 +22,13 @@
 {
     NSArray *menulist,*menulist1;
     NSMutableArray *AllNewsArray,*AllNews,*SearchedNewsArray,*readarticle,*urlarray,*unsortednewsarray;
-    int loginref,didscroll,didselectcollection,newssearched,menuclicked,offsety;
+    int loginref,didscroll,didselectcollection,newssearched,menuclicked,offsety,didrefresh;
     NSInteger selectedrow,selectedfeed,collectionindex;
     NSTimer *timer;
     FeedParse *feedmovie,*feedpolitics,*feedholliwood,*feednational,*feedsports;
     UIButton *flipButton,*menubutton;
     UISearchBar *search;
-    UIView *searchBarView,*headerView;
+    UIView *searchBarView,*feedsheaderView,*menuheaderView;
     UIBarButtonItem *rightbutton,*leftbutton;
     int allnewsindex,AllNewsArrayindex;
     MBProgressHUD *Loading;
@@ -42,6 +42,7 @@
 
 - (void)viewDidLoad
 {
+    didrefresh=0;
     Loading = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     Loading.mode = MBProgressHUDModeIndeterminate;
     Loading.labelText = @"Loading";
@@ -100,11 +101,17 @@
     rightbutton = [[UIBarButtonItem alloc] initWithCustomView:flipButton];
     self.navigationItem.leftBarButtonItem = leftbutton;
     self.navigationItem.rightBarButtonItem = rightbutton;
-    headerView = [[UIView alloc] initWithFrame:CGRectMake(50, 0, 220, 20)];
-    refreshlabel= [[UILabel alloc] initWithFrame:CGRectMake(120, 0, 100, 10)];
+    feedsheaderView = [[UIView alloc] initWithFrame:CGRectMake(50, 0, 220, 10)];
+    feedsheaderView.backgroundColor=[UIColor colorWithRed:0 green:0.5 blue:1 alpha:1];
+    menuheaderView = [[UIView alloc] initWithFrame:CGRectMake(50, 0, 220, 10)];
+    menuheaderView.backgroundColor=[UIColor colorWithRed:1 green:0.5 blue:0 alpha:1];
+    refreshlabel= [[UILabel alloc] initWithFrame:CGRectMake(123, 0, 100, 10)];
     refreshlabel.text=@"Pull To Refresh";
+    refreshlabel.backgroundColor=[UIColor colorWithRed:0 green:0.5 blue:1 alpha:1];;
+    [refreshlabel setTextColor:[UIColor whiteColor]];
     [refreshlabel setFont:[UIFont systemFontOfSize:10]];
-    [headerView addSubview:refreshlabel];
+    [feedsheaderView addSubview:refreshlabel];
+    self.MenuTable.tableHeaderView=menuheaderView;
 }
 
 - (void)didReceiveMemoryWarning
@@ -407,18 +414,17 @@
 {
     if(selectedrow<7)
     {
-    allnewsindex=0;
-    [Loading show:YES];
-    AllNewsArrayindex=0;
-    collectionindex=0;
-    [unsortednewsarray removeAllObjects];
-    [AllNewsArray removeAllObjects];
-    [SearchedNewsArray removeAllObjects];
-    [feedpolitics startparse:[urlarray objectAtIndex:0]];
-    [feedmovie startparse:[urlarray objectAtIndex:1]];
-    [feedholliwood startparse:[urlarray objectAtIndex:2]];
-    [feednational startparse:[urlarray objectAtIndex:3]];
-    [feedsports startparse:[urlarray objectAtIndex:4]];
+        didrefresh=1;
+        allnewsindex=0;
+        [Loading show:YES];
+        AllNewsArrayindex=0;
+        [unsortednewsarray removeAllObjects];
+        [SearchedNewsArray removeAllObjects];
+        [feedpolitics startparse:[urlarray objectAtIndex:0]];
+        [feedmovie startparse:[urlarray objectAtIndex:1]];
+        [feedholliwood startparse:[urlarray objectAtIndex:2]];
+        [feednational startparse:[urlarray objectAtIndex:3]];
+        [feedsports startparse:[urlarray objectAtIndex:4]];
     }
 }
 
@@ -426,6 +432,10 @@
 -(void)passfeeds:(NSDictionary *)passeddict
 {
     [unsortednewsarray addObject:passeddict];
+    if (didrefresh==1) {
+        [AllNewsArray removeAllObjects];
+        didrefresh=0;
+    }
     for (int i=0; i<5; i++) {
         [AllNewsArray insertObject:[[[unsortednewsarray objectAtIndex:allnewsindex ] valueForKey:@"feeds"] objectAtIndex:i] atIndex:AllNewsArrayindex];
         AllNewsArrayindex++;
@@ -441,10 +451,10 @@
                 }
             }
         }
-    [AllNews addObject:AllNewsArray];
-    [self.FeedsTable reloadData];
-    [Loading hide:YES];
-    self.FeedsTable.tableHeaderView = headerView;
+        [AllNews addObject:AllNewsArray];
+        [self.FeedsTable reloadData];
+        [Loading hide:YES];
+        self.FeedsTable.tableHeaderView = feedsheaderView;
     }
     [self.CollectionView reloadData];
 }
