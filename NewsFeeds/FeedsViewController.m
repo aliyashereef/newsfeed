@@ -28,10 +28,11 @@
     FeedParse *feedmovie,*feedpolitics,*feedholliwood,*feednational,*feedsports;
     UIButton *flipButton,*menubutton;
     UISearchBar *search;
-    UIView *searchBarView;
+    UIView *searchBarView,*headerView;
     UIBarButtonItem *rightbutton,*leftbutton;
     int allnewsindex,AllNewsArrayindex;
     MBProgressHUD *Loading;
+    UILabel *refreshlabel;
 }
 
 @end
@@ -99,6 +100,11 @@
     rightbutton = [[UIBarButtonItem alloc] initWithCustomView:flipButton];
     self.navigationItem.leftBarButtonItem = leftbutton;
     self.navigationItem.rightBarButtonItem = rightbutton;
+    headerView = [[UIView alloc] initWithFrame:CGRectMake(50, 0, 220, 20)];
+    refreshlabel= [[UILabel alloc] initWithFrame:CGRectMake(120, 0, 100, 10)];
+    refreshlabel.text=@"Pull To Refresh";
+    [refreshlabel setFont:[UIFont systemFontOfSize:10]];
+    [headerView addSubview:refreshlabel];
 }
 
 - (void)didReceiveMemoryWarning
@@ -134,9 +140,8 @@
     {
         collectionindex=0;
     }
-    if(AllNews.count==0)
+    if(AllNewsArray.count>collectionindex+1)
     {
-    }else {
     NSIndexPath *indexpath = [NSIndexPath indexPathForRow:++collectionindex inSection:0];
     [self.CollectionView scrollToItemAtIndexPath:indexpath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     }
@@ -405,7 +410,7 @@
     allnewsindex=0;
     [Loading show:YES];
     AllNewsArrayindex=0;
-    [AllNews removeAllObjects];
+    collectionindex=0;
     [unsortednewsarray removeAllObjects];
     [AllNewsArray removeAllObjects];
     [SearchedNewsArray removeAllObjects];
@@ -414,7 +419,6 @@
     [feedholliwood startparse:[urlarray objectAtIndex:2]];
     [feednational startparse:[urlarray objectAtIndex:3]];
     [feedsports startparse:[urlarray objectAtIndex:4]];
-    [self.FeedsTable reloadData];
     }
 }
 
@@ -429,16 +433,18 @@
     allnewsindex++;
     if(allnewsindex==5)
     {
+        [AllNews removeAllObjects];
         for (int i=0; i<5;i++) {
             for (int j=0; j<5; j++) {
                 if ([[unsortednewsarray objectAtIndex:j] valueForKey:@"url"]==[urlarray objectAtIndex:i]) {
                     [AllNews addObject:[[unsortednewsarray objectAtIndex:j] valueForKey:@"feeds"]];
                 }
             }
-    }
+        }
     [AllNews addObject:AllNewsArray];
     [self.FeedsTable reloadData];
     [Loading hide:YES];
+    self.FeedsTable.tableHeaderView = headerView;
     }
     [self.CollectionView reloadData];
 }
